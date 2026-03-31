@@ -4,6 +4,7 @@ import argparse
 import csv
 from pathlib import Path
 
+import numpy as np
 from rdflib import Graph, Literal
 
 
@@ -94,7 +95,8 @@ def run_embedding_experiment(edge_path: Path, epochs: int, dimension: int) -> No
             head, relation, tail = line.rstrip("\n").split("\t")
             triples.append((head, relation, tail))
 
-    triples_factory = TriplesFactory.from_labeled_triples(triples)
+    triples_array = np.asarray(triples, dtype=str)
+    triples_factory = TriplesFactory.from_labeled_triples(triples_array)
     training, testing, validation = triples_factory.split(
         [0.8, 0.1, 0.1],
         random_state=42,
@@ -114,17 +116,23 @@ def run_embedding_experiment(edge_path: Path, epochs: int, dimension: int) -> No
 
     metrics = result.metric_results.to_dict()
     both_realistic = metrics.get("both", {}).get("realistic", {})
+    best_candidates = result.model
 
     print("\nEmbedding experiment")
     print(f"- model: TransE")
     print(f"- embedding_dim: {dimension}")
     print(f"- epochs: {epochs}")
+    print(f"- training triples: {training.num_triples}")
+    print(f"- testing triples: {testing.num_triples}")
+    print(f"- validation triples: {validation.num_triples}")
     if both_realistic:
         for metric_name in ("inverse_harmonic_mean_rank", "hits_at_1", "hits_at_3", "hits_at_10"):
             if metric_name in both_realistic:
                 print(f"- {metric_name}: {both_realistic[metric_name]}")
     else:
         print("- evaluation metrics available in result.metric_results.to_dict()")
+    if best_candidates is not None:
+        print("- learned embeddings: yes")
 
 
 def parse_args() -> argparse.Namespace:

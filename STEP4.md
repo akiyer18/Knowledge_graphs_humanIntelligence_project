@@ -15,7 +15,10 @@ This project file already contains enough material for Section 3 of the report.
 - `queries/03_capabilities_per_agent.rq`
 - `queries/04_task_executions_with_models.rq`
 - `queries/05_evaluations_experiments_metrics.rq`
+- `queries/06_team_complexity_contexts.rq`
+- `queries/07_evaluation_completeness_complex.rq`
 - `scripts/step4_kg_analysis.py`
+- `scripts/step4_visualize.py`
 
 ## Run
 
@@ -28,7 +31,13 @@ Use the Python from your conda environment:
 Optional embedding experiment:
 
 ```bash
-/Users/bara/opt/anaconda3/envs/knowgraphs/bin/python scripts/step4_kg_analysis.py --run-embedding --epochs 10 --dimension 32
+OMP_NUM_THREADS=1 /Users/bara/opt/anaconda3/envs/knowgraphs/bin/python scripts/step4_kg_analysis.py --run-embedding --epochs 10 --dimension 32
+```
+
+Generate a couple of simple figures for the report:
+
+```bash
+/Users/bara/opt/anaconda3/envs/knowgraphs/bin/python scripts/step4_visualize.py
 ```
 
 ## What the metrics mean
@@ -49,3 +58,11 @@ You can describe the metrics like this:
 You can describe the query section like this:
 
 > We designed a small SPARQL query set to inspect the graph from complementary perspectives: use case coverage, team-goal-task structure, capability distribution across agents, task execution traces, and evaluation design.
+
+## Rubric alignment
+
+- The project now includes more than 2 complex SPARQL queries.
+- `06_team_complexity_contexts.rq` uses 4+ triple patterns with `OPTIONAL`, `COUNT`, `GROUP BY`, `HAVING`, and `ORDER BY`.
+- `07_evaluation_completeness_complex.rq` uses 4+ triple patterns with `OPTIONAL`, `COUNT`, `GROUP BY`, `IF`, and `ORDER BY`.
+- `step4_visualize.py` produces figures that can be placed directly in the report.
+- The `TransE` run counts as a subsymbolic KG consumption method once it completes and reports ranking metrics such as `MRR` and `Hits@10`.

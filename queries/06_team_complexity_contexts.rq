@@ -1,0 +1,21 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?team
+       (COUNT(DISTINCT ?member) AS ?memberCount)
+       (COUNT(DISTINCT ?task) AS ?taskCount)
+       (COUNT(DISTINCT ?context) AS ?contextCount)
+       (COUNT(DISTINCT ?execution) AS ?executionCount)
+WHERE {
+  ?team a hi:HITeam ;
+        hi:hasMember ?member ;
+        hi:hasGoal ?goal .
+  ?goal hi:requiresTask ?task .
+  OPTIONAL { ?team hi:isInfluencedBy ?context . }
+  OPTIONAL {
+    ?execution a hi:TaskExecution ;
+               hi:towardsGoal ?goal .
+  }
+}
+GROUP BY ?team
+HAVING (COUNT(DISTINCT ?task) >= 2)
+ORDER BY DESC(?taskCount) DESC(?memberCount) ?team

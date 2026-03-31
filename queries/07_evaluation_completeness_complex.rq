@@ -1,0 +1,17 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?evaluation
+       (COUNT(DISTINCT ?experiment) AS ?experimentCount)
+       (COUNT(DISTINCT ?metric) AS ?metricCount)
+       (COUNT(DISTINCT ?nullHypothesis) AS ?nullCount)
+       (COUNT(DISTINCT ?alternativeHypothesis) AS ?alternativeCount)
+       (IF(COUNT(DISTINCT ?metric) > 0 && COUNT(DISTINCT ?nullHypothesis) > 0 && COUNT(DISTINCT ?alternativeHypothesis) > 0, "complete", "partial") AS ?completeness)
+WHERE {
+  ?evaluation a hi:Evaluation ;
+              hi:hasExperiment ?experiment .
+  OPTIONAL { ?experiment hi:hasMetricTested ?metric . }
+  OPTIONAL { ?experiment hi:hasNullHypothesis ?nullHypothesis . }
+  OPTIONAL { ?experiment hi:hasAlternativeHypothesis ?alternativeHypothesis . }
+}
+GROUP BY ?evaluation
+ORDER BY DESC(?experimentCount) DESC(?metricCount) ?evaluation
