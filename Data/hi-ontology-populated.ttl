@@ -1,0 +1,2673 @@
+@prefix hi:       <https://w3id.org/hi-ontology#> .
+@prefix dc:       <http://purl.org/dc/elements/1.1/> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:      <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix swrl:     <http://www.w3.org/2003/11/swrl#> .
+@prefix vann:     <http://purl.org/vocab/vann/> .
+@prefix swrla:    <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#> .
+@prefix schema:   <http://schema.org/> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+
+<https://w3id.org/hi-ontology#>  a owl:Ontology ;
+    dc:title "The Hybrid Intelligence (HI) Ontology"@en ;
+    dc:description "Conceptual model of Hybrid Intelligence: agents, teams, goals, tasks, capabilities, methods, evaluations, context, and ethical phenomena."@en ;
+    dcterms:created "2025-10-01"^^xsd:date ;
+    owl:versionInfo "2.0.0" ;
+    dc:license <https://creativecommons.org/licenses/by/4.0/> ;
+    vann:preferredNamespacePrefix "hi";
+    vann:preferredNamespaceUri "https://w3id.org/hi-ontology#" .
+
+_:org a schema:Organization ;
+    schema:name "Knowledge in AI (KAI) Group - Vrije Universiteit Amsterdam" .
+
+
+#################################################################
+# HI Object Properties
+#################################################################
+
+###  https://w3id.org/hi-ontology#hasUseCaseConcept
+hi:hasUseCaseConcept a owl:ObjectProperty ;
+    rdfs:domain hi:UseCase ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has use case concept" ;
+    rdfs:comment "Links a use case to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasDomainConcept
+hi:hasDomainConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Domain ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has domain concept" ;
+    rdfs:comment "Links a domain to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasDomain
+hi:hasDomain a owl:ObjectProperty ;
+    rdfs:domain hi:UseCase ;
+    rdfs:range  hi:Domain ;
+    rdfs:label "has domain" ;
+    rdfs:comment "Links a use case to a domain."@en .
+
+###  https://w3id.org/hi-ontology#hasHITeam
+hi:hasHITeam a owl:ObjectProperty ;
+    rdfs:domain hi:UseCase ;
+    rdfs:range hi:HITeam ;
+    rdfs:label "has HI team" ;
+    rdfs:comment "A use case introduces a hybrid intelligence team."@en .
+
+###  https://w3id.org/hi-ontology#hasGoal
+hi:hasGoal a owl:ObjectProperty ;
+    rdfs:domain hi:HITeam ;
+    rdfs:range hi:Goal ;
+    rdfs:label "has goal" ;
+    rdfs:comment "An HI team pursues one or more goals."@en .
+
+###  https://w3id.org/hi-ontology#hasMember
+hi:hasMember a owl:ObjectProperty ;
+    rdfs:domain hi:HITeam ;
+    rdfs:range hi:Agent ;
+    rdfs:label "has member" ;
+    rdfs:comment "Specifies agents that are members of an HI team."@en .
+
+###  https://w3id.org/hi-ontology#operatesInContext
+hi:operatesInContext a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range hi:Context ;
+    rdfs:label "operates in context" ;
+    rdfs:comment "Specifies the context in which an HI team operates."@en .
+
+###  https://w3id.org/hi-ontology#hasConstraintConcept
+hi:hasConstraintConcept a owl:ObjectProperty ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( hi:Context hi:HITeam hi:Agent ) 
+    ] ;
+    rdfs:range skos:Concept ;
+    rdfs:label "has constraint concept" ;
+    rdfs:comment "Specifies the constraint using a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasGoalConcept
+hi:hasGoalConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Goal ;
+    rdfs:range skos:Concept ;
+    rdfs:label "has goal concept" ;
+    rdfs:comment "Links a goal to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#requiresTask
+hi:requiresTask a owl:ObjectProperty ;
+    rdfs:domain hi:Goal ;
+    rdfs:range hi:Task ;
+    rdfs:label "has task" ;
+    rdfs:comment "A goal requires one or more tasks to be fulfilled."@en .
+
+###  https://w3id.org/hi-ontology#hasContextConcept
+hi:hasContextConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Context ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has context concept" ;
+    rdfs:comment "Links a context to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasPhenomenonConcept
+hi:hasPhenomenonConcept a owl:ObjectProperty ;
+	rdfs:domain [
+    	a owl:Class ;
+    	owl:unionOf ( hi:Context hi:HITeam hi:Agent ) 
+		] ;
+    rdfs:range skos:Concept ;
+    rdfs:label "has phenomenon concept" ;
+    rdfs:comment "Context exhibits a phenomenon (e.g., bias/feedback emerges in that context)."@en .
+
+###  https://w3id.org/hi-ontology#hasInfluenceOn
+hi:hasInfluenceOn a owl:ObjectProperty ;
+	rdfs:domain hi:Context ;
+	rdfs:range hi:HITeam ;
+	rdfs:label "has influence on" ;
+	rdfs:comment "Relates a contextual condition to the HI team whose actions, collaboration dynamics, or task performance are influenced by that condition. It captures how background phenomena and constraints shape the team's operation in a given use case."@en . 
+
+###  https://w3id.org/hi-ontology#isInfluencedBy
+hi:isInfluencedBy a owl:ObjectProperty ; 
+	owl:inverseOf hi:hasInfluenceOn ;
+	rdfs:domain hi:HITeam ;
+	rdfs:range hi:Context ; 
+	rdfs:label "is influenced by" ;
+	rdfs:comment "Related a HI Team to the contextual condition that affects its actions, collaboration dynamics, or task performance."@en . 
+	
+###  https://w3id.org/hi-ontology#hasRoleConcept
+hi:hasRoleConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range  skos:Concept ;
+	rdfs:label "has role concept" ;
+    rdfs:comment "Links a role to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasCapability
+hi:hasCapability a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range hi:Capability ;
+    rdfs:label "has capability" ;
+    rdfs:comment "Agent possesses a capability."@en .
+
+###  https://w3id.org/hi-ontology#performsExecution
+hi:performsExecution a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range hi:TaskExecution ;
+    rdfs:label "performs execution" ;
+    rdfs:comment "Agent that performs a specific task execution."@en .
+
+###  https://w3id.org/hi-ontology#hasCapabilityConcept
+hi:hasCapabilityConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Capability ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has capability concept" ;
+    rdfs:comment "Links a capability to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#allowsTask
+hi:allowsTask a owl:ObjectProperty ;
+    rdfs:domain hi:Capability ;
+    rdfs:range hi:Task ;
+    rdfs:label "allows task" ;
+    rdfs:comment "A capability enables or allows a task to be performed."@en .
+
+### https://w3id.org/hi-ontology#hasTaskConcept
+hi:hasTaskConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Task ;
+    rdfs:range  skos:Concept ;
+	rdfs:label "has task concept" ;
+    rdfs:comment "Links a task to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#requiresCapability
+hi:requiresCapability a owl:ObjectProperty ;
+	owl:inverseOf hi:allowsTask ;
+    rdfs:domain hi:Task ;
+    rdfs:range hi:Capability ;
+    rdfs:label "requires cability" ;
+    rdfs:comment "A task requires certain capabilities to be accomplished."@en .
+
+### https://w3id.org/hi-ontology#hasExecutionConcept
+hi:hasExecutionConcept a owl:ObjectProperty ;
+    rdfs:domain hi:TaskExecution ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has execution concept" ;
+    rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#realizesTask
+hi:realizesTask a owl:ObjectProperty ;
+    rdfs:domain hi:TaskExecution ;
+    rdfs:range hi:Task ;
+    rdfs:label "realizes task" ;
+    rdfs:comment "Task execution realizes a task."@en .
+
+###  https://w3id.org/hi-ontology#performedBy
+hi:performedBy a owl:ObjectProperty ;
+    owl:inverseOf hi:performsExecution ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( hi:TaskExecution ) 
+    ] ;
+    rdfs:range hi:Agent ;
+    rdfs:label "performed by" ;
+    rdfs:comment "Execution performed by an agent."@en .
+
+###  https://w3id.org/hi-ontology#hasInteractionEpisode	
+hi:hasInteractionEpisode a owl:ObjectProperty ;
+		rdfs:domain hi:TaskExecution ;
+		rdfs:range hi:Interaction ;
+		rdfs:label "has interaction episode"; 
+		rdfs:comment "Identifies moments of interaction (e.g., dialogue, negotiation, or guidance) that unfold within the execution of a task."@en .
+
+###  https://w3id.org/hi-ontology#towardsGoal
+hi:towardsGoal a owl:ObjectProperty ;
+    rdfs:domain hi:TaskExecution ;
+    rdfs:range hi:Goal ;
+    rdfs:label "towards goal" ;
+    rdfs:comment "Task execution towards a goal."@en .
+
+
+### https://w3id.org/hi-ontology#hasMethodConcept
+hi:hasMethodConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Method ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has method concept" ;
+    rdfs:comment "Links a task execution to a method in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasInteractionIntentConcept
+hi:hasInteractionIntentConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Interaction ;
+    rdfs:range skos:Concept ;
+    rdfs:label "has interaction intent concept" ;
+    rdfs:comment "Intent underlying the interaction (e.g., explain, request, negotiate)."@en .
+	
+###  https://w3id.org/hi-ontology#hasAgentInvolved
+hi:hasAgentInvolved a owl:ObjectProperty ; 
+	rdfs:domain hi:Interaction ;
+	rdfs:range hi:Agent ;
+	rdfs:label "has agent involved" ; 
+	rdfs:comment "Indicates an agent that participates in or contributes to an interaction episode. This property identifies the human or artificial agents involved in the exchange."@en .
+
+###  https://w3id.org/hi-ontology#hasInteractionModalityConcept
+hi:hasInteractionModalityConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Interaction ;
+    rdfs:range skos:Concept ;
+    rdfs:label "has interaction modality concept" ;
+    rdfs:comment "Modality/channel used during the interaction."@en .
+
+###  https://w3id.org/hi-ontology#evaluatedBy
+hi:evaluatedBy a owl:ObjectProperty ;
+    rdfs:domain hi:TaskExecution ;
+    rdfs:range hi:Evaluation ;
+    rdfs:label "evaluated by" ;
+    rdfs:comment "Execution is evaluated by a defined evaluation."@en .
+
+###  https://w3id.org/hi-ontology#hasEvaluationConcept
+hi:hasEvaluationConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Evaluation ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has evaluation concept" ;
+    rdfs:comment "Links an evaluation to a concept in the HINT thesaurus."@en .
+
+###  https://w3id.org/hi-ontology#hasEvaluationConcept
+hi:hasMetricConcept a owl:ObjectProperty ;
+	rdfs:domain hi:Evaluation ;
+	rdfs:range skos:Concept ;
+	rdfs:label "has metric concept" ;
+	rdfs:comment "An evaluation uses certain metrics, defined in the HINT thesaurus"@en .
+
+###  https://w3id.org/hi-ontology#hasExperiment
+hi:hasExperiment a owl:ObjectProperty ;
+    rdfs:domain hi:Evaluation ;
+    rdfs:range hi:Experiment ;
+    rdfs:label "has experiment" ;
+    rdfs:comment "An evaluation has an experiment."@en .
+
+### https://w3id.org/hi-ontology#hasExperimentConcept
+hi:hasExperimentConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Experiment ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "has experiment concept" ;
+    rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en .
+	
+###  https://w3id.org/hi-ontology#hasMetricTested
+hi:hasMetricTested a owl:ObjectProperty ;
+		rdfs:domain hi:Experiment ;
+		rdfs:range hi:Metric ;
+		rdfs:label "has metric tested" ;
+		rdfs:comment "An experiment tests certain metrics."@en .	
+
+###  https://w3id.org/hi-ontology#hasMetricTested
+hi:hasMetricConcept a owl:ObjectProperty ;
+		rdfs:domain hi:Metric ;
+		rdfs:range skos:Concept ;
+		rdfs:label "has metric concept" ;
+		rdfs:comment "Links a metric to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasAgentConcept
+hi:hasAgentConcept a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range  skos:Concept ;
+	rdfs:label "has agent concept" ;
+    rdfs:comment "Links an agent to a concept in the HINT thesaurus."@en . 
+
+hi:usesModel a owl:ObjectProperty ;
+    rdfs:domain hi:TaskExecution ;
+    rdfs:range hi:Model ;
+    rdfs:label "uses model" ;
+    rdfs:comment "Indicates that a task execution uses a specific model (e.g., a language model developed by an organization) in its operation."@en .
+
+hi:hasMethod a owl:ObjectProperty ;
+    rdfs:domain hi:Model ;
+    rdfs:range hi:Method ;
+    rdfs:label "has method" ;
+    rdfs:comment "A model uses a specific method."@en .
+
+hi:hasInputData a owl:ObjectProperty ;
+    rdfs:domain hi:Model, hi:TaskExecution ;
+    rdfs:range hi:Data ;
+    rdfs:label "has input data" ;
+    rdfs:comment "A model or task execution takes specific input data."@en .
+
+hi:hasOutputData a owl:ObjectProperty ;
+    rdfs:domain hi:Model, hi:TaskExecution ;
+    rdfs:range hi:Data ;
+    rdfs:label "has output data" ;
+    rdfs:comment "A model or task execution produces specific output data."@en .
+
+###  https://w3id.org/hi-ontology#isAssignedToTask
+hi:isAssignedToTask a owl:ObjectProperty ;
+	rdfs:subPropertyOf hi:isEligibleForTask ;
+	rdfs:domain hi:Agent ;
+	rdfs:range hi:Task ;
+	owl:propertyChainAxiom ( hi:performsExecution hi:realizesTask ) ;
+	rdfs:label "is assigned to task" ;
+	rdfs:comment "Relates an agent to a task that it is formally assigned to perform. Every assignment implies that the agent is eligible for that task."@en .
+
+###  https://w3id.org/hi-ontology#eligibleForTask
+hi:isEligibleForTask a owl:ObjectProperty ;
+    rdfs:domain hi:Agent ;
+    rdfs:range hi:Task ;
+	owl:propertyChainAxiom ( hi:hasCapability hi:allowsTask ) ;
+    rdfs:label "is eligible for task" ;
+    rdfs:comment "Relates an agent to a task it is eligible to perform, based on their capabilities. Assignment is a stricter, policy-level decision that presupposes eligibility."@en .
+	
+###  https://w3id.org/hi-ontology#executesTask
+hi:executesTask a owl:ObjectProperty ;
+    rdfs:subPropertyOf hi:isAssignedToTask ;
+    rdfs:domain hi:Agent ;
+    rdfs:range hi:Task ;
+    owl:propertyChainAxiom ( hi:performsExecution hi:realizesTask ) ;
+    rdfs:label "executes task" ;
+    rdfs:comment "Agent executes a task (derivable from Agent→Execution→Task)."@en .
+
+###  https://w3id.org/hi-ontology#realizedBy
+hi:realizedBy a owl:ObjectProperty ;
+    owl:inverseOf hi:realizesTask ;
+    rdfs:domain hi:Task ;
+    rdfs:range hi:TaskExecution ;
+    rdfs:label "realized by" ;
+    rdfs:comment "A task is realized through a task execution."@en .
+
+
+#################################################################
+# HI Data Properties
+#################################################################
+
+### https://w3id.org/hi-ontology#hasAlternativeHypothesis
+hi:hasAlternativeHypothesis a owl:DatatypeProperty ;
+    rdfs:domain hi:Experiment ;
+    rdfs:range xsd:string ;
+    rdfs:label "has alternative hypothesis"@en ;
+    rdfs:comment "Stores the textual formulation of the alternative hypothesis of an experiment."@en .
+
+### https://w3id.org/hi-ontology#hasNullHypothesis
+hi:hasNullHypothesis a owl:DatatypeProperty ;
+    rdfs:domain hi:Experiment ;
+    rdfs:range xsd:string ;
+    rdfs:label "has null hypothesis"@en ;
+    rdfs:comment "Stores the textual formulation of the null hypothesis of an experiment."@en .
+
+
+#################################################################
+# HI Classes
+#################################################################
+
+###  https://w3id.org/hi-ontology#UseCase
+hi:UseCase a owl:Class ;
+    rdfs:comment "A structured situation describing a specific hybrid intelligence scenario (previously 'Scenario')."@en ;
+    rdfs:label "Use Case"@en .
+
+###  https://w3id.org/hi-ontology#HITeam
+hi:HITeam a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+                      owl:onProperty hi:hasMember ;
+                      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                      owl:onClass hi:ArtificialAgent
+                    ] ,
+                    [ a owl:Restriction ;
+                      owl:onProperty hi:hasMember ;
+                      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                      owl:onClass hi:HumanAgent
+                    ] ;
+    rdfs:comment "A hybrid intelligence team composed of human and artificial agents pursuing a shared goal."@en ;
+    rdfs:label "HI Team"@en .
+
+###  https://w3id.org/hi-ontology#Goal
+hi:Goal a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty hi:requiresTask ;
+        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass hi:Task
+    ] ;
+    rdfs:comment "A desired outcome pursued by an HI team, requiring one or more tasks to be completed."@en ;
+    rdfs:label "Goal"@en .
+
+###  https://w3id.org/hi-ontology#Context
+hi:Context a owl:Class ;
+    rdfs:comment "Situational conditions (environmental, cultural, cognitive) under which tasks and evaluations occur."@en ;
+    rdfs:label "Context"@en .
+
+###  https://w3id.org/hi-ontology#Agent
+hi:Agent a owl:Class ;
+    rdfs:comment "An autonomous entity capable of having roles, goals, and capabilities within a hybrid intelligence system."@en ;
+    rdfs:label "Agent"@en .
+
+###  https://w3id.org/hi-ontology#ArtificialAgent
+hi:ArtificialAgent a owl:Class ;
+    rdfs:subClassOf hi:Agent ;
+    rdfs:comment "An artificial or computational agent (robot, software, etc.) collaborating with human agents."@en ;
+    rdfs:label "Artificial Agent"@en .
+
+###  https://w3id.org/hi-ontology#HumanAgent
+hi:HumanAgent a owl:Class ;
+    rdfs:subClassOf hi:Agent , foaf:Person ;
+	owl:disjointWith hi:ArtificialAgent ;
+    rdfs:comment "A human participant in the hybrid intelligence system, possessing cognitive and perceptual abilities."@en ;
+    rdfs:label "Human Agent"@en .
+
+###  https://w3id.org/hi-ontology#Capability
+hi:Capability a owl:Class ;
+    rdfs:comment "A skill, competence, or functional capacity that allows an agent to perform or enable a task."@en ;
+    rdfs:label "Capability"@en .
+
+###  https://w3id.org/hi-ontology#Task
+hi:Task a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+                      owl:onProperty hi:requiresCapability ;
+                      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                      owl:onClass hi:Capability
+                    ] ;
+    rdfs:comment "A unit of purposeful activity executed by an agent toward achieving a goal."@en ;
+    rdfs:label "Task"@en .
+
+###  https://w3id.org/hi-ontology#TaskExecution
+hi:TaskExecution a owl:Class ;
+    rdfs:comment "The realization or performance of a specific task by an agent using a method."@en ;
+    rdfs:label "Task Execution"@en .
+
+###  https://w3id.org/hi-ontology#Interaction
+hi:Interaction a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+                      owl:onProperty hi:hasAgentInvolved ;
+                      owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                      owl:onClass hi:Agent
+                    ] ;
+    rdfs:comment "A multi-agent task execution where two or more agents coordinate (verbal, symbolic, or physical) toward a goal."@en ;
+    rdfs:label "Interaction"@en .
+
+###  https://w3id.org/hi-ontology#Evaluation
+hi:Evaluation a owl:Class ;
+    rdfs:comment "A process of assessing the quality or outcome of executions, methods, or goals."@en ;
+    rdfs:label "Evaluation"@en .
+
+###  https://w3id.org/hi-ontology#Experiment
+hi:Experiment a owl:Class ;
+    rdfs:comment "An empirical setup linked to an evaluation that tests metrics and hypotheses."@en ;
+    rdfs:label "Experiment"@en .
+
+hi:Model a owl:Class ;
+    rdfs:comment "A computational model (e.g., a language model) used by an agent during task execution."@en ;
+    rdfs:label "Model"@en .
+
+hi:Data a owl:Class ;
+    rdfs:comment "Data used as input or output in models and task executions."@en ;
+    rdfs:label "Data"@en .
+
+hi:Method a owl:Class ;
+    rdfs:comment "A method or approach used in task execution or modeling."@en ;
+    rdfs:label "Method"@en .
+
+hi:Metric a owl:Class ;
+    rdfs:comment "A metric used for evaluating task executions or models."@en ;
+    rdfs:label "Metric"@en .
+
+hi:Domain a owl:Class ;
+    rdfs:comment "A domain of application or knowledge relevant to a use case."@en ;
+    rdfs:label "Domain"@en .
+    
+#################################################################
+# Reused Classes
+#################################################################
+skos:Concept a owl:Class ;
+    rdfs:label "Concept"@en ;
+    rdfs:comment "A SKOS concept representing a unit of thought, used for controlled vocabularies and thesauri."@en .
+
+schema:PropertyValue a owl:Class ;
+    rdfs:label "Property Value"@en ;
+    rdfs:comment "A Schema.org class representing a specific property-value pair, often used for metadata or structured descriptions."@en .
+
+schema:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:comment "A Schema.org class representing an organization such as an institution, company, or group."@en .
+	
+###  http://xmlns.com/foaf/0.1/Person
+foaf:Person a owl:Class ;
+    rdfs:label "Person"@en ;
+    rdfs:comment "A human individual described using the FOAF vocabulary. Represents natural persons who may participate in, interact with, or be modeled within a Hybrid Intelligence scenario."@en .
+
+
+###############################################################################################################################
+# INDIVIDUALS: 
+# The following individuals were mapped from the student file to align with the HI ontology. 
+# They represent specific agents, contexts, data items, and other entities relevant to the use cases described by the students.
+###############################################################################################################################
+
+
+#################################################################
+# Student file 1 
+#################################################################
+
+### Capabilities reused from the student file where they fit the HI model
+hi:Adaptiveness a hi:Capability ;
+    rdfs:label "Adaptiveness"@en .
+
+hi:Collaborativeness a hi:Capability ;
+    rdfs:label "Collaborativeness"@en .
+
+hi:Communication a hi:Capability ;
+    rdfs:label "Communication"@en .
+
+hi:Responsibility a hi:Capability ;
+    rdfs:label "Responsibility"@en .
+
+hi:Transparency a hi:Capability ;
+    rdfs:label "Transparency"@en .
+
+### Agents
+hi:Human_User a hi:HumanAgent ;
+    rdfs:label "Human user"@en .
+
+hi:Human_Researcher a hi:HumanAgent ;
+    rdfs:label "Human researcher"@en .
+
+hi:Human_Expert a hi:HumanAgent ;
+    rdfs:label "Human expert"@en .
+
+hi:AI_TrustGameTeammate a hi:ArtificialAgent ;
+    rdfs:label "AI trust game teammate"@en ;
+    hi:hasCapability hi:Collaborativeness, hi:Communication .
+
+hi:AI_PaleoReconstructionAssistant a hi:ArtificialAgent ;
+    rdfs:label "AI paleo reconstruction assistant"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Communication .
+
+hi:AI_GazeAwareConversationalAgent a hi:ArtificialAgent ;
+    rdfs:label "AI gaze-aware conversational agent"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Communication .
+
+hi:AI_SocialHealthCoach a hi:ArtificialAgent ;
+    rdfs:label "AI social health coach"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Communication, hi:Responsibility .
+
+hi:AI_LLM_MoralReasoner a hi:ArtificialAgent ;
+    rdfs:label "AI LLM moral reasoner"@en ;
+    hi:hasCapability hi:Transparency, hi:Responsibility .
+
+hi:AI_PolicySimulationAgent a hi:ArtificialAgent ;
+    rdfs:label "AI policy simulation agent"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Transparency .
+
+hi:AI_EEG_TrustCalibrationSystem a hi:ArtificialAgent ;
+    rdfs:label "AI EEG trust calibration system"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Transparency .
+
+### Contexts (mapped from student UserState individuals)
+hi:UserState_TrustInAITeammate a hi:Context ;
+    rdfs:label "Trust in AI teammate"@en .
+
+hi:UserState_ResearchCognitiveLoad a hi:Context ;
+    rdfs:label "Research cognitive load"@en .
+
+hi:UserState_HighVisualAttention a hi:Context ;
+    rdfs:label "High visual attention"@en .
+
+hi:UserState_AIOverReliance a hi:Context ;
+    rdfs:label "AI over-reliance"@en .
+
+hi:UserState_TrustInLLM a hi:Context ;
+    rdfs:label "Trust in LLM"@en .
+
+hi:UserState_TrustCalibrationLevel a hi:Context ;
+    rdfs:label "Trust calibration level"@en .
+
+### Human agents placed in the contexts that were originally attached as user states
+hi:Human_User hi:operatesInContext hi:UserState_TrustInAITeammate,
+        hi:UserState_HighVisualAttention,
+        hi:UserState_AIOverReliance,
+        hi:UserState_TrustCalibrationLevel .
+
+hi:Human_Researcher hi:operatesInContext hi:UserState_ResearchCognitiveLoad .
+
+hi:Human_Expert hi:operatesInContext hi:UserState_TrustInLLM .
+
+### Data items
+hi:Data_TrustGameLogs a hi:Data ;
+    rdfs:label "Game interaction logs"@en .
+
+hi:Data_ArchaeologyRecords a hi:Data ;
+    rdfs:label "Archaeology and environmental records"@en .
+
+hi:Data_GazeTrackingStream a hi:Data ;
+    rdfs:label "Gaze tracking data stream"@en .
+
+hi:Data_LifestyleLogs a hi:Data ;
+    rdfs:label "Lifestyle and behaviour logs"@en .
+
+hi:Data_MoralDilemmaSet a hi:Data ;
+    rdfs:label "Moral dilemma dataset"@en .
+
+hi:Data_PolicySimulationParameters a hi:Data ;
+    rdfs:label "Policy simulation parameters"@en .
+
+hi:Data_EEGSignals a hi:Data ;
+    rdfs:label "EEG signals"@en .
+
+hi:Evidence_GameInteractionLogs a hi:Data ;
+    rdfs:label "Evidence from game interaction logs"@en .
+
+hi:Evidence_ArchaeologicalRecords a hi:Data ;
+    rdfs:label "Evidence from archaeological records"@en .
+
+hi:Evidence_GazeAttentionData a hi:Data ;
+    rdfs:label "Evidence from gaze attention data"@en .
+
+hi:Evidence_LifestyleLogs a hi:Data ;
+    rdfs:label "Evidence from lifestyle logs"@en .
+
+hi:Evidence_MoralDataset a hi:Data ;
+    rdfs:label "Evidence from moral dataset"@en .
+
+hi:Evidence_SimulationParameters a hi:Data ;
+    rdfs:label "Evidence from simulation parameters"@en .
+
+hi:Evidence_EEGSignalsUsed a hi:Data ;
+    rdfs:label "Evidence from EEG signals"@en .
+
+hi:Recommendation_CollaborationStrategy a hi:Data ;
+    rdfs:label "Recommendation: collaboration strategy"@en .
+
+hi:Recommendation_ReconstructionHypothesis a hi:Data ;
+    rdfs:label "Recommendation: reconstruction hypothesis"@en .
+
+hi:Recommendation_GazePersonalizedResponse a hi:Data ;
+    rdfs:label "Recommendation: personalized gaze response"@en .
+
+hi:Recommendation_LifestyleChange a hi:Data ;
+    rdfs:label "Recommendation: lifestyle change"@en .
+
+hi:Recommendation_MoralChoice a hi:Data ;
+    rdfs:label "Recommendation: moral choice"@en .
+
+hi:Recommendation_PolicyOption a hi:Data ;
+    rdfs:label "Recommendation: policy option"@en .
+
+hi:Recommendation_TrustAdjustment a hi:Data ;
+    rdfs:label "Recommendation: trust adjustment"@en .
+
+hi:Justification_TrustFactorModel a hi:Data ;
+    rdfs:label "Justification: trust factor model"@en .
+
+hi:Justification_DataDrivenReconstruction a hi:Data ;
+    rdfs:label "Justification: data-driven reconstruction"@en .
+
+hi:Justification_GazeBasedPersonalization a hi:Data ;
+    rdfs:label "Justification: gaze-based personalization"@en .
+
+hi:Justification_BehavioralAnalysis a hi:Data ;
+    rdfs:label "Justification: behavioural analysis"@en .
+
+hi:Justification_MoralReasoning a hi:Data ;
+    rdfs:label "Justification: moral reasoning"@en .
+
+hi:Justification_SimulationResults a hi:Data ;
+    rdfs:label "Justification: simulation results"@en .
+
+hi:Justification_EEGSignalAnalysis a hi:Data ;
+    rdfs:label "Justification: EEG signal analysis"@en .
+
+### Minimal tasks added so that executions realize an actual HI task
+hi:Task_CollaborativeGameStrategy a hi:Task ;
+    rdfs:label "Collaborative game strategy task"@en ;
+    hi:requiresCapability hi:Collaborativeness, hi:Communication .
+
+hi:Task_EnvironmentReconstruction a hi:Task ;
+    rdfs:label "Environment reconstruction task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Communication .
+
+hi:Task_GazePersonalization a hi:Task ;
+    rdfs:label "Gaze-aware personalization task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Communication .
+
+hi:Task_LifestyleRecommendation a hi:Task ;
+    rdfs:label "Lifestyle recommendation task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Responsibility .
+
+hi:Task_MoralJudgementSupport a hi:Task ;
+    rdfs:label "Moral judgement support task"@en ;
+    hi:requiresCapability hi:Transparency, hi:Responsibility .
+
+hi:Task_PolicySimulation a hi:Task ;
+    rdfs:label "Policy simulation task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Transparency .
+
+hi:Task_TrustCalibration a hi:Task ;
+    rdfs:label "Trust calibration task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Transparency .
+
+### Task executions mapped from DecisionEvent_*
+hi:DecisionEvent_CollaborativeGameStrategy a hi:TaskExecution ;
+    rdfs:label "Decision event: collaborative game strategy"@en ;
+    hi:realizesTask hi:Task_CollaborativeGameStrategy ;
+    hi:performedBy hi:AI_TrustGameTeammate, hi:Human_User ;
+    hi:hasInteractionEpisode hi:Interaction_CollaborativeGameStrategy ;
+    hi:hasInputData hi:Data_TrustGameLogs, hi:Evidence_GameInteractionLogs ;
+    hi:hasOutputData hi:Recommendation_CollaborationStrategy, hi:Justification_TrustFactorModel .
+
+hi:DecisionEvent_EnvironmentReconstruction a hi:TaskExecution ;
+    rdfs:label "Decision event: environment reconstruction"@en ;
+    hi:realizesTask hi:Task_EnvironmentReconstruction ;
+    hi:performedBy hi:AI_PaleoReconstructionAssistant, hi:Human_Researcher ;
+    hi:hasInteractionEpisode hi:Interaction_EnvironmentReconstruction ;
+    hi:hasInputData hi:Data_ArchaeologyRecords, hi:Evidence_ArchaeologicalRecords ;
+    hi:hasOutputData hi:Recommendation_ReconstructionHypothesis, hi:Justification_DataDrivenReconstruction .
+
+hi:DecisionEvent_GazeInteraction1 a hi:TaskExecution ;
+    rdfs:label "Decision event: gaze interaction"@en ;
+    hi:realizesTask hi:Task_GazePersonalization ;
+    hi:performedBy hi:AI_GazeAwareConversationalAgent, hi:Human_User ;
+    hi:hasInteractionEpisode hi:Interaction_GazeInteraction1 ;
+    hi:hasInputData hi:Data_GazeTrackingStream, hi:Evidence_GazeAttentionData ;
+    hi:hasOutputData hi:Recommendation_GazePersonalizedResponse, hi:Justification_GazeBasedPersonalization .
+
+hi:DecisionEvent_LifestyleRecommendation a hi:TaskExecution ;
+    rdfs:label "Decision event: lifestyle recommendation"@en ;
+    hi:realizesTask hi:Task_LifestyleRecommendation ;
+    hi:performedBy hi:AI_SocialHealthCoach, hi:Human_User ;
+    hi:hasInteractionEpisode hi:Interaction_LifestyleRecommendation ;
+    hi:hasInputData hi:Data_LifestyleLogs, hi:Evidence_LifestyleLogs ;
+    hi:hasOutputData hi:Recommendation_LifestyleChange, hi:Justification_BehavioralAnalysis .
+
+hi:DecisionEvent_MoralJudgement a hi:TaskExecution ;
+    rdfs:label "Decision event: moral judgement"@en ;
+    hi:realizesTask hi:Task_MoralJudgementSupport ;
+    hi:performedBy hi:AI_LLM_MoralReasoner, hi:Human_Expert ;
+    hi:hasInteractionEpisode hi:Interaction_MoralJudgement ;
+    hi:hasInputData hi:Data_MoralDilemmaSet, hi:Evidence_MoralDataset ;
+    hi:hasOutputData hi:Recommendation_MoralChoice, hi:Justification_MoralReasoning .
+
+hi:DecisionEvent_PolicySimulation a hi:TaskExecution ;
+    rdfs:label "Decision event: policy simulation"@en ;
+    hi:realizesTask hi:Task_PolicySimulation ;
+    hi:performedBy hi:AI_PolicySimulationAgent, hi:Human_Expert ;
+    hi:hasInteractionEpisode hi:Interaction_PolicySimulation ;
+    hi:hasInputData hi:Data_PolicySimulationParameters, hi:Evidence_SimulationParameters ;
+    hi:hasOutputData hi:Recommendation_PolicyOption, hi:Justification_SimulationResults .
+
+hi:DecisionEvent_TrustCalibration a hi:TaskExecution ;
+    rdfs:label "Decision event: trust calibration"@en ;
+    hi:realizesTask hi:Task_TrustCalibration ;
+    hi:performedBy hi:AI_EEG_TrustCalibrationSystem, hi:Human_User ;
+    hi:hasInteractionEpisode hi:Interaction_TrustCalibration ;
+    hi:hasInputData hi:Data_EEGSignals, hi:Evidence_EEGSignalsUsed ;
+    hi:hasOutputData hi:Recommendation_TrustAdjustment, hi:Justification_EEGSignalAnalysis .
+
+### Interaction episodes added to preserve the original interactingAgent semantics
+hi:Interaction_CollaborativeGameStrategy a hi:Interaction ;
+    rdfs:label "Interaction episode: collaborative game strategy"@en ;
+    hi:hasAgentInvolved hi:AI_TrustGameTeammate, hi:Human_User .
+
+hi:Interaction_EnvironmentReconstruction a hi:Interaction ;
+    rdfs:label "Interaction episode: environment reconstruction"@en ;
+    hi:hasAgentInvolved hi:AI_PaleoReconstructionAssistant, hi:Human_Researcher .
+
+hi:Interaction_GazeInteraction1 a hi:Interaction ;
+    rdfs:label "Interaction episode: gaze interaction"@en ;
+    hi:hasAgentInvolved hi:AI_GazeAwareConversationalAgent, hi:Human_User .
+
+hi:Interaction_LifestyleRecommendation a hi:Interaction ;
+    rdfs:label "Interaction episode: lifestyle recommendation"@en ;
+    hi:hasAgentInvolved hi:AI_SocialHealthCoach, hi:Human_User .
+
+hi:Interaction_MoralJudgement a hi:Interaction ;
+    rdfs:label "Interaction episode: moral judgement"@en ;
+    hi:hasAgentInvolved hi:AI_LLM_MoralReasoner, hi:Human_Expert .
+
+hi:Interaction_PolicySimulation a hi:Interaction ;
+    rdfs:label "Interaction episode: policy simulation"@en ;
+    hi:hasAgentInvolved hi:AI_PolicySimulationAgent, hi:Human_Expert .
+
+hi:Interaction_TrustCalibration a hi:Interaction ;
+    rdfs:label "Interaction episode: trust calibration"@en ;
+    hi:hasAgentInvolved hi:AI_EEG_TrustCalibrationSystem, hi:Human_User .
+
+
+#################################################################
+# Student file 2           
+#################################################################
+
+### Capabilities
+hi:Creativity a hi:Capability .
+hi:SituationalAwareness a hi:Capability ;
+    rdfs:comment "Perception of the environment and comprehension of the perceived state."@en .
+hi:DynamicMentalizing a hi:Capability ;
+    rdfs:comment "Theory-of-mind-like capability used to reason about other agents' intentions and beliefs."@en .
+
+### Methods
+hi:CollaborationBased a hi:Method .
+hi:ContributionBased a hi:Method .
+hi:Multimodal a hi:Method .
+hi:CoCreation a hi:Method .
+hi:Hybrid a hi:Method .
+hi:NeuroSymbolic a hi:Method .
+hi:Statistical a hi:Method .
+hi:Symbolic a hi:Method .
+
+### Contexts and domains
+hi:GeometryFriends a hi:Context ;
+    rdfs:comment "A collaborative physics-based puzzle and platform game environment."@en .
+
+hi:CooperativeCuisine a hi:Context ;
+    rdfs:comment "A collaborative cooking-game environment inspired by Overcooked!."@en .
+
+hi:EducationDomain a hi:Domain .
+hi:SoftwareEngineeringDomain a hi:Domain .
+hi:MobilityDomain a hi:Domain .
+
+### Agents and model
+hi:AdultUser a hi:HumanAgent, foaf:Person .
+hi:TeacherUser a hi:HumanAgent, foaf:Person .
+hi:DesignerUser a hi:HumanAgent, foaf:Person .
+hi:ChildUser a hi:HumanAgent, foaf:Person .
+
+hi:RobotAgent a hi:ArtificialAgent .
+hi:GrammarlyAutocorrect a hi:ArtificialAgent .
+hi:TeslaAutosteer a hi:ArtificialAgent .
+hi:CodeGenerationController a hi:ArtificialAgent ;
+    rdfs:comment "Controller responsible for orchestrating code-generation interactions."@en ;
+    hi:hasCapability hi:Communication, hi:Responsibility .
+
+hi:GPT_4o_mini a hi:Model ;
+    rdfs:comment "Language model used during task execution."@en ;
+    hi:hasMethod hi:Statistical, hi:Hybrid .
+
+### Tasks
+hi:CodeGenerationTask a hi:Task ;
+    hi:requiresCapability hi:Creativity, hi:Communication .
+
+hi:VoiceToTextTask a hi:Task ;
+    hi:requiresCapability hi:Communication .
+
+hi:ExplainabilityTask a hi:Task ;
+    hi:requiresCapability hi:Transparency, hi:Communication .
+
+hi:QuestionAnsweringTask a hi:Task ;
+    hi:requiresCapability hi:Communication .
+
+hi:RecommendationTask a hi:Task ;
+    hi:requiresCapability hi:Collaborativeness, hi:Responsibility .
+
+hi:UserIntentionResolutionTask a hi:Task ;
+    hi:requiresCapability hi:DynamicMentalizing, hi:Adaptiveness .
+
+hi:JointActionTask a hi:Task ;
+    hi:requiresCapability hi:Collaborativeness, hi:SituationalAwareness .
+
+### Goals
+hi:SupportCodeAuthoringGoal a hi:Goal ;
+    hi:requiresTask hi:CodeGenerationTask, hi:QuestionAnsweringTask, hi:ExplainabilityTask .
+
+hi:SupportSafeDrivingGoal a hi:Goal ;
+    hi:requiresTask hi:RecommendationTask, hi:UserIntentionResolutionTask .
+
+hi:EnableCollaborativeGameplayGoal a hi:Goal ;
+    hi:requiresTask hi:JointActionTask .
+
+### Teams
+hi:CodeAssistantTeam a hi:HITeam ;
+    hi:hasMember hi:AdultUser, hi:CodeGenerationController ;
+    hi:hasGoal hi:SupportCodeAuthoringGoal ;
+    hi:isInfluencedBy hi:GeometryFriends .
+
+hi:DrivingSupportTeam a hi:HITeam ;
+    hi:hasMember hi:AdultUser, hi:TeslaAutosteer ;
+    hi:hasGoal hi:SupportSafeDrivingGoal .
+
+hi:CollaborativeGameplayTeam a hi:HITeam ;
+    hi:hasMember hi:ChildUser, hi:RobotAgent ;
+    hi:hasGoal hi:EnableCollaborativeGameplayGoal ;
+    hi:isInfluencedBy hi:GeometryFriends .
+
+### Use cases
+hi:CodeAssistantUseCase a hi:UseCase ;
+    hi:hasDomain hi:SoftwareEngineeringDomain ;
+    hi:hasHITeam hi:CodeAssistantTeam .
+
+hi:DrivingSupportUseCase a hi:UseCase ;
+    hi:hasDomain hi:MobilityDomain ;
+    hi:hasHITeam hi:DrivingSupportTeam .
+
+hi:CollaborativeGameplayUseCase a hi:UseCase ;
+    hi:hasDomain hi:EducationDomain ;
+    hi:hasHITeam hi:CollaborativeGameplayTeam .
+
+### Agent capabilities and contexts
+hi:AdultUser hi:hasCapability hi:Communication, hi:Responsibility ;
+    hi:operatesInContext hi:CooperativeCuisine .
+
+hi:ChildUser hi:hasCapability hi:Collaborativeness ;
+    hi:operatesInContext hi:GeometryFriends .
+
+hi:TeacherUser hi:hasCapability hi:Communication, hi:Transparency ;
+    hi:operatesInContext hi:CooperativeCuisine .
+
+hi:DesignerUser hi:hasCapability hi:Creativity, hi:Communication .
+
+hi:RobotAgent hi:hasCapability hi:SituationalAwareness, hi:Collaborativeness .
+hi:GrammarlyAutocorrect hi:hasCapability hi:Communication, hi:Transparency .
+hi:TeslaAutosteer hi:hasCapability hi:Adaptiveness, hi:SituationalAwareness .
+
+### Task executions
+hi:CodeGenerationExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:CodeGenerationTask ;
+    hi:towardsGoal hi:SupportCodeAuthoringGoal ;
+    hi:performedBy hi:CodeGenerationController ;
+    hi:usesModel hi:GPT_4o_mini ;
+    hi:hasInputData hi:PromptSpecificationData ;
+    hi:hasOutputData hi:GeneratedCodeData ;
+    hi:hasInteractionEpisode hi:CodeGenerationInteraction_01 .
+
+hi:DrivingRecommendationExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:RecommendationTask ;
+    hi:towardsGoal hi:SupportSafeDrivingGoal ;
+    hi:performedBy hi:TeslaAutosteer ;
+    hi:hasInputData hi:DrivingSensorData ;
+    hi:hasOutputData hi:DrivingRecommendationData ;
+    hi:hasInteractionEpisode hi:DrivingSupportInteraction_01 .
+
+hi:GameplayCoordinationExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:JointActionTask ;
+    hi:towardsGoal hi:EnableCollaborativeGameplayGoal ;
+    hi:performedBy hi:RobotAgent ;
+    hi:hasInputData hi:GameStateData ;
+    hi:hasOutputData hi:GameplayCoordinationData ;
+    hi:hasInteractionEpisode hi:GameplayInteraction_01 .
+
+### Interactions
+hi:CodeGenerationInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:AdultUser, hi:CodeGenerationController ;
+    rdfs:comment "Human-AI interaction around code generation, explanation, and question answering."@en .
+
+hi:DrivingSupportInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:AdultUser, hi:TeslaAutosteer ;
+    rdfs:comment "Human-AI interaction around driving recommendations and intention-sensitive support."@en .
+
+hi:GameplayInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:ChildUser, hi:RobotAgent ;
+    rdfs:comment "Collaborative interaction in a game-like environment requiring coordinated joint action."@en .
+
+### Data
+hi:PromptSpecificationData a hi:Data .
+hi:GeneratedCodeData a hi:Data .
+hi:DrivingSensorData a hi:Data .
+hi:DrivingRecommendationData a hi:Data .
+hi:GameStateData a hi:Data .
+hi:GameplayCoordinationData a hi:Data .
+
+#################################################################
+# Student file 3
+#################################################################
+
+### New capabilities that were useful and not yet introduced
+hi:TrustInAutomation a hi:Capability ;
+    rdfs:label "Trust in automation"@en .
+
+hi:DecisionConfidence a hi:Capability ;
+    rdfs:label "Decision confidence"@en .
+
+hi:UserModeling a hi:Capability ;
+    rdfs:label "User modeling"@en .
+
+hi:Personalization a hi:Capability ;
+    rdfs:label "Personalization"@en .
+
+hi:Engagement a hi:Capability ;
+    rdfs:label "Engagement"@en .
+
+hi:ProgressMonitoring a hi:Capability ;
+    rdfs:label "Progress monitoring"@en .
+
+hi:NormAwareness a hi:Capability ;
+    rdfs:label "Norm awareness"@en .
+
+### New domains
+hi:HealthcareDomain a hi:Domain ;
+    rdfs:label "Healthcare"@en .
+
+hi:KnowledgeEngineeringDomain a hi:Domain ;
+    rdfs:label "Knowledge engineering"@en .
+
+hi:ConversationalAIDomain a hi:Domain ;
+    rdfs:label "Conversational AI"@en .
+
+### New contexts
+hi:DiagnosticUncertaintyContext a hi:Context ;
+    rdfs:label "Diagnostic uncertainty context"@en .
+
+hi:OntologyMaintenanceContext a hi:Context ;
+    rdfs:label "Ontology maintenance context"@en .
+
+hi:KnowledgeAcquisitionBottleneckContext a hi:Context ;
+    rdfs:label "Knowledge acquisition bottleneck context"@en .
+
+hi:LongContextInteractionContext a hi:Context ;
+    rdfs:label "Long-context interaction context"@en .
+
+hi:PersonalizedLearningContext a hi:Context ;
+    rdfs:label "Personalized learning context"@en .
+
+### Agents
+hi:Clinician a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Clinician"@en ;
+    hi:hasCapability hi:Responsibility, hi:TrustInAutomation, hi:DecisionConfidence ;
+    hi:operatesInContext hi:DiagnosticUncertaintyContext .
+
+hi:ClinicalAIDecisionSupportTool a hi:ArtificialAgent ;
+    rdfs:label "Clinical AI decision support tool"@en ;
+    hi:hasCapability hi:Transparency, hi:Communication .
+
+hi:LLM_Agent a hi:ArtificialAgent ;
+    rdfs:label "LLM agent"@en ;
+    hi:hasCapability hi:Transparency, hi:Communication .
+
+hi:FormalizationAssistantAgent a hi:ArtificialAgent ;
+    rdfs:label "Formalization assistant agent"@en ;
+    hi:hasCapability hi:Communication, hi:Transparency .
+
+hi:Chatbot a hi:ArtificialAgent ;
+    rdfs:label "Chatbot"@en ;
+    hi:hasCapability hi:Communication, hi:UserModeling .
+
+hi:Alex a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Alex"@en ;
+    hi:hasCapability hi:Collaborativeness ;
+    hi:operatesInContext hi:PersonalizedLearningContext .
+
+hi:Therapist a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Therapist"@en ;
+    hi:hasCapability hi:Communication, hi:Responsibility, hi:NormAwareness ;
+    hi:operatesInContext hi:PersonalizedLearningContext .
+
+hi:AssistiveRobot a hi:ArtificialAgent ;
+    rdfs:label "Assistive robot"@en ;
+    hi:hasCapability hi:Adaptiveness, hi:Transparency, hi:Communication,
+        hi:Personalization, hi:Engagement, hi:ProgressMonitoring, hi:NormAwareness .
+
+### Methods
+hi:AxiomWeakening a hi:Method ;
+    rdfs:label "Axiom weakening"@en .
+
+hi:SpreadingActivation a hi:Method ;
+    rdfs:label "Spreading activation"@en .
+
+### Models
+hi:GraphMemoMemorySystem a hi:Model ;
+    rdfs:label "GraphMemo memory system"@en ;
+    hi:hasMethod hi:SpreadingActivation .
+
+### Tasks
+hi:ClinicalRecommendationTask a hi:Task ;
+    rdfs:label "Clinical recommendation task"@en ;
+    hi:requiresCapability hi:Communication, hi:Transparency .
+
+hi:OntologyRepairTask a hi:Task ;
+    rdfs:label "Ontology repair task"@en ;
+    hi:requiresCapability hi:Transparency, hi:Communication .
+
+hi:FormalRuleGenerationTask a hi:Task ;
+    rdfs:label "Formal rule generation task"@en ;
+    hi:requiresCapability hi:Communication, hi:Transparency .
+
+hi:LongTermDialogueTask a hi:Task ;
+    rdfs:label "Long-term dialogue task"@en ;
+    hi:requiresCapability hi:Communication, hi:UserModeling .
+
+hi:PersonalizedLearningSupportTask a hi:Task ;
+    rdfs:label "Personalized learning support task"@en ;
+    hi:requiresCapability hi:Adaptiveness, hi:Communication, hi:Personalization .
+
+### Goals
+hi:SupportClinicalDecisionMakingGoal a hi:Goal ;
+    rdfs:label "Support clinical decision making"@en ;
+    hi:requiresTask hi:ClinicalRecommendationTask .
+
+hi:MaintainOntologyQualityGoal a hi:Goal ;
+    rdfs:label "Maintain ontology quality"@en ;
+    hi:requiresTask hi:OntologyRepairTask .
+
+hi:FormalizeKnowledgeGoal a hi:Goal ;
+    rdfs:label "Formalize knowledge"@en ;
+    hi:requiresTask hi:FormalRuleGenerationTask .
+
+hi:SustainLongTermDialogueGoal a hi:Goal ;
+    rdfs:label "Sustain long-term dialogue"@en ;
+    hi:requiresTask hi:LongTermDialogueTask .
+
+hi:SupportPersonalizedLearningGoal a hi:Goal ;
+    rdfs:label "Support personalized learning"@en ;
+    hi:requiresTask hi:PersonalizedLearningSupportTask .
+
+### Teams
+hi:ClinicalDecisionSupportTeam a hi:HITeam ;
+    hi:hasMember hi:Clinician, hi:ClinicalAIDecisionSupportTool ;
+    hi:hasGoal hi:SupportClinicalDecisionMakingGoal ;
+    hi:isInfluencedBy hi:DiagnosticUncertaintyContext .
+
+hi:OntologyEvolutionTeam a hi:HITeam ;
+    hi:hasMember hi:LLM_Agent, hi:Human_Expert ;
+    hi:hasGoal hi:MaintainOntologyQualityGoal ;
+    hi:isInfluencedBy hi:OntologyMaintenanceContext .
+
+hi:KnowledgeFormalizationTeam a hi:HITeam ;
+    hi:hasMember hi:FormalizationAssistantAgent, hi:Human_Expert ;
+    hi:hasGoal hi:FormalizeKnowledgeGoal ;
+    hi:isInfluencedBy hi:KnowledgeAcquisitionBottleneckContext .
+
+hi:LongTermDialogueTeam a hi:HITeam ;
+    hi:hasMember hi:Chatbot, hi:Human_User ;
+    hi:hasGoal hi:SustainLongTermDialogueGoal ;
+    hi:isInfluencedBy hi:LongContextInteractionContext .
+
+hi:AlexLearningSupportTeam a hi:HITeam ;
+    hi:hasMember hi:Alex, hi:AssistiveRobot, hi:TeacherUser, hi:Therapist ;
+    hi:hasGoal hi:SupportPersonalizedLearningGoal ;
+    hi:isInfluencedBy hi:PersonalizedLearningContext .
+
+### Use cases
+hi:ClinicalUncertaintyCommunicationUseCase a hi:UseCase ;
+    hi:hasDomain hi:HealthcareDomain ;
+    hi:hasHITeam hi:ClinicalDecisionSupportTeam .
+
+hi:NeurosymbolicOntologyEvolutionUseCase a hi:UseCase ;
+    hi:hasDomain hi:KnowledgeEngineeringDomain ;
+    hi:hasHITeam hi:OntologyEvolutionTeam .
+
+hi:KnowledgeFormalizationUseCase a hi:UseCase ;
+    hi:hasDomain hi:KnowledgeEngineeringDomain ;
+    hi:hasHITeam hi:KnowledgeFormalizationTeam .
+
+hi:LongTermMemoryChatbotUseCase a hi:UseCase ;
+    hi:hasDomain hi:ConversationalAIDomain ;
+    hi:hasHITeam hi:LongTermDialogueTeam .
+
+hi:AlexLearningSupportUseCase a hi:UseCase ;
+    hi:hasDomain hi:EducationDomain ;
+    hi:hasHITeam hi:AlexLearningSupportTeam .
+
+### Data
+hi:ClinicalCaseData a hi:Data ;
+    rdfs:label "Clinical case data"@en .
+
+hi:ClinicalRecommendationData a hi:Data ;
+    rdfs:label "Clinical recommendation data"@en .
+
+hi:CandidateKnowledgeBuffer a hi:Data ;
+    rdfs:label "Candidate knowledge buffer"@en .
+
+hi:OntologyRepairSuggestionData a hi:Data ;
+    rdfs:label "Ontology repair suggestion data"@en .
+
+hi:FormalizationInputData a hi:Data ;
+    rdfs:label "Knowledge formalization input data"@en .
+
+hi:FormalRuleOutputData a hi:Data ;
+    rdfs:label "Formal rule output data"@en .
+
+hi:LongMemo5Dataset a hi:Data ;
+    rdfs:label "LongMemo5 dataset"@en .
+
+hi:DialogueResponseData a hi:Data ;
+    rdfs:label "Dialogue response data"@en .
+
+hi:LearnerProfileData a hi:Data ;
+    rdfs:label "Learner profile data"@en .
+
+hi:LearningSupportRecommendationData a hi:Data ;
+    rdfs:label "Learning support recommendation data"@en .
+
+### Task executions
+hi:ClinicalRecommendationExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:ClinicalRecommendationTask ;
+    hi:towardsGoal hi:SupportClinicalDecisionMakingGoal ;
+    hi:performedBy hi:Clinician, hi:ClinicalAIDecisionSupportTool ;
+    hi:hasInputData hi:ClinicalCaseData ;
+    hi:hasOutputData hi:ClinicalRecommendationData ;
+    hi:hasInteractionEpisode hi:ClinicalAdviceTakingInteraction_01 .
+
+hi:OntologyRepairExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:OntologyRepairTask ;
+    hi:towardsGoal hi:MaintainOntologyQualityGoal ;
+    hi:performedBy hi:LLM_Agent, hi:Human_Expert ;
+    hi:hasInputData hi:CandidateKnowledgeBuffer ;
+    hi:hasOutputData hi:OntologyRepairSuggestionData ;
+    hi:hasInteractionEpisode hi:NeurosymbolicRepairInteraction_01 .
+
+hi:KnowledgeFormalizationExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:FormalRuleGenerationTask ;
+    hi:towardsGoal hi:FormalizeKnowledgeGoal ;
+    hi:performedBy hi:FormalizationAssistantAgent, hi:Human_Expert ;
+    hi:hasInputData hi:FormalizationInputData ;
+    hi:hasOutputData hi:FormalRuleOutputData ;
+    hi:hasInteractionEpisode hi:KnowledgeAcquisitionInteraction_01 .
+
+hi:LongTermDialogueExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:LongTermDialogueTask ;
+    hi:towardsGoal hi:SustainLongTermDialogueGoal ;
+    hi:performedBy hi:Chatbot, hi:Human_User ;
+    hi:usesModel hi:GraphMemoMemorySystem ;
+    hi:hasInputData hi:LongMemo5Dataset ;
+    hi:hasOutputData hi:DialogueResponseData ;
+    hi:hasInteractionEpisode hi:MemoryAugmentedDialogueInteraction_01 .
+
+hi:PersonalizedLearningSupportExecution_01 a hi:TaskExecution ;
+    hi:realizesTask hi:PersonalizedLearningSupportTask ;
+    hi:towardsGoal hi:SupportPersonalizedLearningGoal ;
+    hi:performedBy hi:AssistiveRobot, hi:TeacherUser, hi:Therapist ;
+    hi:hasInputData hi:LearnerProfileData ;
+    hi:hasOutputData hi:LearningSupportRecommendationData ;
+    hi:hasInteractionEpisode hi:CollaborativeLearningPlanInteraction_01,
+        hi:ProgressReportingInteraction_01,
+        hi:PositiveReinforcementInteraction_01 .
+
+### Interactions
+hi:ClinicalAdviceTakingInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:Clinician, hi:ClinicalAIDecisionSupportTool ;
+    rdfs:comment "Clinical advice-taking interaction under diagnostic uncertainty."@en .
+
+hi:NeurosymbolicRepairInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:LLM_Agent, hi:Human_Expert ;
+    rdfs:comment "Interaction for reviewing and repairing candidate ontology content."@en .
+
+hi:KnowledgeAcquisitionInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:Human_Expert, hi:FormalizationAssistantAgent ;
+    rdfs:comment "Interaction for eliciting and formalizing domain knowledge."@en .
+
+hi:MemoryAugmentedDialogueInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:Chatbot, hi:Human_User ;
+    rdfs:comment "Dialogue interaction supported by long-term memory retrieval."@en .
+
+hi:CollaborativeLearningPlanInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:TeacherUser, hi:Therapist, hi:AssistiveRobot ;
+    rdfs:comment "Collaborative planning interaction for personalized learning support."@en .
+
+hi:ProgressReportingInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:TeacherUser, hi:Therapist, hi:AssistiveRobot ;
+    rdfs:comment "Interaction for communicating and reviewing learner progress."@en .
+
+hi:PositiveReinforcementInteraction_01 a hi:Interaction ;
+    hi:hasAgentInvolved hi:AssistiveRobot, hi:Alex ;
+    rdfs:comment "Interaction where the robot reinforces learner engagement and progress."@en .
+
+################################################################
+# Student file 4
+#################################################################
+
+### Domains
+hi:SecurityDomain a hi:Domain ;
+    rdfs:label "Security"@en .
+
+hi:CulturalHeritageDomain a hi:Domain ;
+    rdfs:label "Cultural heritage"@en .
+
+### Contexts
+hi:AdaptiveCybersecurityContext a hi:Context ;
+    rdfs:label "Adaptive cybersecurity operations context"@en .
+
+hi:ProteinDiscoveryResearchContext a hi:Context ;
+    rdfs:label "Protein discovery research context"@en .
+
+hi:RobotAssistedLearningContext a hi:Context ;
+    rdfs:label "Robot-assisted learning support context"@en .
+
+hi:ArchivalCurationContext a hi:Context ;
+    rdfs:label "Archival curation context"@en .
+
+### Agents
+hi:AISecuritySystem a hi:ArtificialAgent ;
+    rdfs:label "AI security system"@en ;
+    hi:operatesInContext hi:AdaptiveCybersecurityContext ;
+    hi:hasCapability hi:PatternRecognitionForThreatDetection,
+        hi:ContinuousLearning,
+        hi:RapidExplanationGeneration ;
+    hi:performsExecution hi:BlockSuspiciousTrafficExecution .
+
+hi:CybersecurityExpert a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Cybersecurity expert"@en ;
+    hi:operatesInContext hi:AdaptiveCybersecurityContext ;
+    hi:hasCapability hi:SecurityDecisionMaking,
+        hi:CybersecurityContextAssessment,
+        hi:Communication ;
+    hi:performsExecution hi:CrossCheckThreatPredictionExecution,
+        hi:RestoreAccessExecution .
+
+hi:AlphaFoldSystem a hi:ArtificialAgent ;
+    rdfs:label "AlphaFold system"@en ;
+    hi:operatesInContext hi:ProteinDiscoveryResearchContext ;
+    hi:hasCapability hi:ProteinStructurePrediction,
+        hi:ThreeDimensionalModelGeneration,
+        hi:ScientificDataProcessing ;
+    hi:performsExecution hi:ProteinAnalysisExecution .
+
+hi:DrEmilyChen a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Dr Emily Chen"@en ;
+    hi:operatesInContext hi:ProteinDiscoveryResearchContext ;
+    hi:hasCapability hi:ClinicalJudgment,
+        hi:LiteratureReview,
+        hi:ResearchCoordination ;
+    hi:performsExecution hi:LiteratureCrossReferencingExecution .
+
+hi:AnnaTherapist a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Anna"@en ;
+    hi:operatesInContext hi:RobotAssistedLearningContext ;
+    hi:hasCapability hi:TherapeuticExpertise,
+        hi:BehavioristApproach ;
+    hi:performsExecution hi:ChildAssessmentExecution .
+
+hi:LeahTeacher a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Leah"@en ;
+    hi:operatesInContext hi:RobotAssistedLearningContext ;
+    hi:hasCapability hi:PedagogicalSkills,
+        hi:TechnologyEnthusiasm ;
+    hi:performsExecution hi:EducationalPlanningExecution .
+
+hi:NaoRobot a hi:ArtificialAgent ;
+    rdfs:label "NAO robot"@en ;
+    hi:operatesInContext hi:RobotAssistedLearningContext ;
+    hi:hasCapability hi:ReactiveResponse,
+        hi:WizardOfOzInteraction ;
+    hi:performsExecution hi:GuidedRobotInteractionExecution .
+
+hi:ArchivalFootageAISystem a hi:ArtificialAgent ;
+    rdfs:label "Archival footage AI system"@en ;
+    hi:operatesInContext hi:ArchivalCurationContext ;
+    hi:hasCapability hi:MultimodalUnderstanding,
+        hi:ReinforcementLearningSupport ;
+    hi:performsExecution hi:ArchiveVideoSegmentationExecution .
+
+hi:CulturalHeritageSteward a hi:HumanAgent, foaf:Person ;
+    rdfs:label "Cultural heritage steward"@en ;
+    hi:operatesInContext hi:ArchivalCurationContext ;
+    hi:hasCapability hi:CulturalStewardship,
+        hi:Negotiation ;
+    hi:performsExecution hi:ConsentAndGovernanceNegotiationExecution .
+
+### Capabilities
+hi:PatternRecognitionForThreatDetection a hi:Capability ;
+    rdfs:label "Pattern recognition for threat detection"@en ;
+    hi:allowsTask hi:BlockSuspiciousTrafficTask .
+
+hi:ContinuousLearning a hi:Capability ;
+    rdfs:label "Continuous learning"@en ;
+    hi:allowsTask hi:CrossCheckThreatPredictionTask .
+
+hi:RapidExplanationGeneration a hi:Capability ;
+    rdfs:label "Rapid explanation generation"@en ;
+    hi:allowsTask hi:RestoreAccessTask .
+
+hi:SecurityDecisionMaking a hi:Capability ;
+    rdfs:label "Security decision making"@en ;
+    hi:allowsTask hi:CrossCheckThreatPredictionTask,
+        hi:RestoreAccessTask .
+
+hi:CybersecurityContextAssessment a hi:Capability ;
+    rdfs:label "Cybersecurity context assessment"@en ;
+    hi:allowsTask hi:BlockSuspiciousTrafficTask,
+        hi:CrossCheckThreatPredictionTask .
+
+hi:ProteinStructurePrediction a hi:Capability ;
+    rdfs:label "Protein structure prediction"@en ;
+    hi:allowsTask hi:ProteinAnalysisTask .
+
+hi:ThreeDimensionalModelGeneration a hi:Capability ;
+    rdfs:label "3D model generation"@en ;
+    hi:allowsTask hi:ProteinModelGenerationTask .
+
+hi:ScientificDataProcessing a hi:Capability ;
+    rdfs:label "Scientific data processing"@en ;
+    hi:allowsTask hi:ProteinAnalysisTask .
+
+hi:ClinicalJudgment a hi:Capability ;
+    rdfs:label "Clinical judgment"@en ;
+    hi:allowsTask hi:ProteinAnalysisTask,
+        hi:LiteratureCrossReferencingTask .
+
+hi:LiteratureReview a hi:Capability ;
+    rdfs:label "Literature review"@en ;
+    hi:allowsTask hi:LiteratureCrossReferencingTask .
+
+hi:ResearchCoordination a hi:Capability ;
+    rdfs:label "Research coordination"@en ;
+    hi:allowsTask hi:ResearchOptimizationTask .
+
+hi:TherapeuticExpertise a hi:Capability ;
+    rdfs:label "Therapeutic expertise"@en ;
+    hi:allowsTask hi:ChildAssessmentTask .
+
+hi:BehavioristApproach a hi:Capability ;
+    rdfs:label "Behaviorist approach"@en ;
+    hi:allowsTask hi:ChildAssessmentTask .
+
+hi:PedagogicalSkills a hi:Capability ;
+    rdfs:label "Pedagogical skills"@en ;
+    hi:allowsTask hi:EducationalPlanningTask .
+
+hi:TechnologyEnthusiasm a hi:Capability ;
+    rdfs:label "Technology enthusiasm"@en ;
+    hi:allowsTask hi:EducationalPlanningTask,
+        hi:GuidedRobotInteractionTask .
+
+hi:ReactiveResponse a hi:Capability ;
+    rdfs:label "Reactive response"@en ;
+    hi:allowsTask hi:GuidedRobotInteractionTask .
+
+hi:WizardOfOzInteraction a hi:Capability ;
+    rdfs:label "Wizard-of-Oz interaction"@en ;
+    hi:allowsTask hi:GuidedRobotInteractionTask .
+
+hi:MultimodalUnderstanding a hi:Capability ;
+    rdfs:label "Multimodal understanding"@en ;
+    hi:allowsTask hi:ArchiveVideoSegmentationTask .
+
+hi:ReinforcementLearningSupport a hi:Capability ;
+    rdfs:label "Reinforcement learning support"@en ;
+    hi:allowsTask hi:ArchiveVideoSegmentationTask .
+
+hi:CulturalStewardship a hi:Capability ;
+    rdfs:label "Cultural stewardship"@en ;
+    hi:allowsTask hi:ArchivalCollectionTask .
+
+hi:Negotiation a hi:Capability ;
+    rdfs:label "Negotiation"@en ;
+    hi:allowsTask hi:DataGovernanceNegotiationTask .
+
+### Tasks
+hi:BlockSuspiciousTrafficTask a hi:Task ;
+    rdfs:label "Block suspicious traffic"@en ;
+    hi:requiresCapability hi:PatternRecognitionForThreatDetection,
+        hi:CybersecurityContextAssessment .
+
+hi:CrossCheckThreatPredictionTask a hi:Task ;
+    rdfs:label "Cross-check threat predictions"@en ;
+    hi:requiresCapability hi:SecurityDecisionMaking,
+        hi:CybersecurityContextAssessment .
+
+hi:RestoreAccessTask a hi:Task ;
+    rdfs:label "Restore legitimate access"@en ;
+    hi:requiresCapability hi:SecurityDecisionMaking,
+        hi:RapidExplanationGeneration .
+
+hi:ProteinAnalysisTask a hi:Task ;
+    rdfs:label "Protein analysis"@en ;
+    hi:requiresCapability hi:ProteinStructurePrediction,
+        hi:ClinicalJudgment ;
+    hi:realizedBy hi:ProteinAnalysisExecution .
+
+hi:ProteinModelGenerationTask a hi:Task ;
+    rdfs:label "Protein model generation"@en ;
+    hi:requiresCapability hi:ThreeDimensionalModelGeneration .
+
+hi:LiteratureCrossReferencingTask a hi:Task ;
+    rdfs:label "Cross-reference scientific literature"@en ;
+    hi:requiresCapability hi:LiteratureReview,
+        hi:ClinicalJudgment .
+
+hi:ResearchOptimizationTask a hi:Task ;
+    rdfs:label "Research-team optimization"@en ;
+    hi:requiresCapability hi:ResearchCoordination .
+
+hi:ChildAssessmentTask a hi:Task ;
+    rdfs:label "Child assessment"@en ;
+    hi:requiresCapability hi:TherapeuticExpertise,
+        hi:BehavioristApproach .
+
+hi:EducationalPlanningTask a hi:Task ;
+    rdfs:label "Educational planning"@en ;
+    hi:requiresCapability hi:PedagogicalSkills,
+        hi:TechnologyEnthusiasm .
+
+hi:GuidedRobotInteractionTask a hi:Task ;
+    rdfs:label "Guided robot interaction"@en ;
+    hi:requiresCapability hi:ReactiveResponse,
+        hi:WizardOfOzInteraction,
+        hi:TechnologyEnthusiasm .
+
+hi:ArchivalCollectionTask a hi:Task ;
+    rdfs:label "Archival footage collection"@en ;
+    hi:requiresCapability hi:CulturalStewardship .
+
+hi:ArchiveVideoSegmentationTask a hi:Task ;
+    rdfs:label "Video segmentation and tagging"@en ;
+    hi:requiresCapability hi:MultimodalUnderstanding,
+        hi:ReinforcementLearningSupport .
+
+hi:DataGovernanceNegotiationTask a hi:Task ;
+    rdfs:label "Ethical data governance and consent negotiation"@en ;
+    hi:requiresCapability hi:Negotiation .
+
+### Goals
+hi:ImproveCybersecurityResponseGoal a hi:Goal ;
+    rdfs:label "Improve cybersecurity response"@en ;
+    hi:requiresTask hi:BlockSuspiciousTrafficTask,
+        hi:CrossCheckThreatPredictionTask,
+        hi:RestoreAccessTask .
+
+hi:IdentifyNeuroprotectiveProteinsGoal a hi:Goal ;
+    rdfs:label "Identify neuroprotective proteins"@en ;
+    hi:requiresTask hi:ProteinAnalysisTask,
+        hi:LiteratureCrossReferencingTask,
+        hi:ResearchOptimizationTask .
+
+hi:ImproveLearningOutcomesGoal a hi:Goal ;
+    rdfs:label "Improve learning outcomes"@en ;
+    hi:requiresTask hi:ChildAssessmentTask,
+        hi:EducationalPlanningTask,
+        hi:GuidedRobotInteractionTask .
+
+hi:PreserveAndCurateArchivalKnowledgeGoal a hi:Goal ;
+    rdfs:label "Preserve and curate archival knowledge"@en ;
+    hi:requiresTask hi:ArchivalCollectionTask,
+        hi:ArchiveVideoSegmentationTask,
+        hi:DataGovernanceNegotiationTask .
+
+### Teams
+hi:CybersecurityResponseTeam a hi:HITeam ;
+    rdfs:label "Cybersecurity response team"@en ;
+    hi:hasMember hi:AISecuritySystem,
+        hi:CybersecurityExpert ;
+    hi:hasGoal hi:ImproveCybersecurityResponseGoal ;
+    hi:isInfluencedBy hi:AdaptiveCybersecurityContext .
+
+hi:ProteinDiscoveryTeam a hi:HITeam ;
+    rdfs:label "Protein discovery team"@en ;
+    hi:hasMember hi:AlphaFoldSystem,
+        hi:DrEmilyChen ;
+    hi:hasGoal hi:IdentifyNeuroprotectiveProteinsGoal ;
+    hi:isInfluencedBy hi:ProteinDiscoveryResearchContext .
+
+hi:RobotAssistedLearningTeam a hi:HITeam ;
+    rdfs:label "Robot-assisted learning team"@en ;
+    hi:hasMember hi:AnnaTherapist,
+        hi:LeahTeacher,
+        hi:NaoRobot ;
+    hi:hasGoal hi:ImproveLearningOutcomesGoal ;
+    hi:isInfluencedBy hi:RobotAssistedLearningContext .
+
+hi:ArchivalCurationTeam a hi:HITeam ;
+    rdfs:label "Archival curation team"@en ;
+    hi:hasMember hi:ArchivalFootageAISystem,
+        hi:CulturalHeritageSteward ;
+    hi:hasGoal hi:PreserveAndCurateArchivalKnowledgeGoal ;
+    hi:isInfluencedBy hi:ArchivalCurationContext .
+
+### Use cases
+hi:AdaptiveCybersecurityUseCase a hi:UseCase ;
+    rdfs:label "Adaptive cybersecurity response"@en ;
+    hi:hasDomain hi:SecurityDomain ;
+    hi:hasHITeam hi:CybersecurityResponseTeam .
+
+hi:ProteinDiscoveryUseCase a hi:UseCase ;
+    rdfs:label "Protein discovery with human-AI collaboration"@en ;
+    hi:hasDomain hi:HealthcareDomain ;
+    hi:hasHITeam hi:ProteinDiscoveryTeam .
+
+hi:RobotAssistedLearningUseCase a hi:UseCase ;
+    rdfs:label "Robot-assisted learning support"@en ;
+    hi:hasDomain hi:EducationDomain ;
+    hi:hasHITeam hi:RobotAssistedLearningTeam .
+
+hi:ArchivalCurationUseCase a hi:UseCase ;
+    rdfs:label "Archival footage curation"@en ;
+    hi:hasDomain hi:CulturalHeritageDomain ;
+    hi:hasHITeam hi:ArchivalCurationTeam .
+
+### Task executions
+hi:BlockSuspiciousTrafficExecution a hi:TaskExecution ;
+    rdfs:label "Blocking suspicious traffic execution"@en ;
+    hi:realizesTask hi:BlockSuspiciousTrafficTask ;
+    hi:performedBy hi:AISecuritySystem ;
+    hi:towardsGoal hi:ImproveCybersecurityResponseGoal ;
+    hi:hasInteractionEpisode hi:CybersecurityThreatReviewInteraction ;
+    hi:evaluatedBy hi:CybersecurityResponseEvaluation .
+
+hi:CrossCheckThreatPredictionExecution a hi:TaskExecution ;
+    rdfs:label "Cross-check threat prediction execution"@en ;
+    hi:realizesTask hi:CrossCheckThreatPredictionTask ;
+    hi:performedBy hi:CybersecurityExpert ;
+    hi:towardsGoal hi:ImproveCybersecurityResponseGoal ;
+    hi:hasInteractionEpisode hi:CybersecurityThreatReviewInteraction .
+
+hi:RestoreAccessExecution a hi:TaskExecution ;
+    rdfs:label "Restore access execution"@en ;
+    hi:realizesTask hi:RestoreAccessTask ;
+    hi:performedBy hi:CybersecurityExpert ;
+    hi:towardsGoal hi:ImproveCybersecurityResponseGoal .
+
+hi:ProteinAnalysisExecution a hi:TaskExecution ;
+    rdfs:label "Protein analysis execution"@en ;
+    hi:realizesTask hi:ProteinAnalysisTask ;
+    hi:performedBy hi:AlphaFoldSystem ;
+    hi:towardsGoal hi:IdentifyNeuroprotectiveProteinsGoal ;
+    hi:hasInteractionEpisode hi:ProteinInterpretationInteraction ;
+    hi:evaluatedBy hi:ProteinPredictionEvaluation ;
+    hi:hasInputData hi:ProteinSequenceDataset ;
+    hi:hasOutputData hi:PredictedProteinStructureData ;
+    hi:usesModel hi:AlphaFoldPredictionModel .
+
+hi:LiteratureCrossReferencingExecution a hi:TaskExecution ;
+    rdfs:label "Literature cross-referencing execution"@en ;
+    hi:realizesTask hi:LiteratureCrossReferencingTask ;
+    hi:performedBy hi:DrEmilyChen ;
+    hi:towardsGoal hi:IdentifyNeuroprotectiveProteinsGoal ;
+    hi:hasInteractionEpisode hi:ProteinInterpretationInteraction ;
+    hi:hasInputData hi:ProteinLiteratureCorpus .
+
+hi:ChildAssessmentExecution a hi:TaskExecution ;
+    rdfs:label "Child assessment execution"@en ;
+    hi:realizesTask hi:ChildAssessmentTask ;
+    hi:performedBy hi:AnnaTherapist ;
+    hi:towardsGoal hi:ImproveLearningOutcomesGoal ;
+    hi:hasInteractionEpisode hi:LearningSupportPlanningInteraction .
+
+hi:EducationalPlanningExecution a hi:TaskExecution ;
+    rdfs:label "Educational planning execution"@en ;
+    hi:realizesTask hi:EducationalPlanningTask ;
+    hi:performedBy hi:LeahTeacher ;
+    hi:towardsGoal hi:ImproveLearningOutcomesGoal ;
+    hi:hasInteractionEpisode hi:LearningSupportPlanningInteraction .
+
+hi:GuidedRobotInteractionExecution a hi:TaskExecution ;
+    rdfs:label "Guided robot interaction execution"@en ;
+    hi:realizesTask hi:GuidedRobotInteractionTask ;
+    hi:performedBy hi:NaoRobot ;
+    hi:towardsGoal hi:ImproveLearningOutcomesGoal ;
+    hi:hasInteractionEpisode hi:GuidedLearningInteraction ;
+    hi:evaluatedBy hi:LearningSupportEvaluation .
+
+hi:ArchiveVideoSegmentationExecution a hi:TaskExecution ;
+    rdfs:label "Archive video segmentation execution"@en ;
+    hi:realizesTask hi:ArchiveVideoSegmentationTask ;
+    hi:performedBy hi:ArchivalFootageAISystem ;
+    hi:towardsGoal hi:PreserveAndCurateArchivalKnowledgeGoal ;
+    hi:hasInteractionEpisode hi:ArchivalGovernanceInteraction ;
+    hi:hasInputData hi:ArchivalFootageDataset ;
+    hi:hasOutputData hi:TaggedArchivalSegments ;
+    hi:usesModel hi:ArchivalSegmentationModel .
+
+hi:ConsentAndGovernanceNegotiationExecution a hi:TaskExecution ;
+    rdfs:label "Consent and governance negotiation execution"@en ;
+    hi:realizesTask hi:DataGovernanceNegotiationTask ;
+    hi:performedBy hi:CulturalHeritageSteward ;
+    hi:towardsGoal hi:PreserveAndCurateArchivalKnowledgeGoal ;
+    hi:hasInteractionEpisode hi:ArchivalGovernanceInteraction .
+
+### Interactions
+hi:CybersecurityThreatReviewInteraction a hi:Interaction ;
+    rdfs:label "Cybersecurity threat review interaction"@en ;
+    hi:hasAgentInvolved hi:AISecuritySystem,
+        hi:CybersecurityExpert .
+
+hi:ProteinInterpretationInteraction a hi:Interaction ;
+    rdfs:label "Protein interpretation interaction"@en ;
+    hi:hasAgentInvolved hi:AlphaFoldSystem,
+        hi:DrEmilyChen .
+
+hi:LearningSupportPlanningInteraction a hi:Interaction ;
+    rdfs:label "Learning support planning interaction"@en ;
+    hi:hasAgentInvolved hi:AnnaTherapist,
+        hi:LeahTeacher .
+
+hi:GuidedLearningInteraction a hi:Interaction ;
+    rdfs:label "Guided learning interaction"@en ;
+    hi:hasAgentInvolved hi:LeahTeacher,
+        hi:NaoRobot .
+
+hi:ArchivalGovernanceInteraction a hi:Interaction ;
+    rdfs:label "Archival governance interaction"@en ;
+    hi:hasAgentInvolved hi:ArchivalFootageAISystem,
+        hi:CulturalHeritageSteward .
+
+### Evaluations and experiments
+hi:CybersecurityResponseEvaluation a hi:Evaluation ;
+    rdfs:label "Cybersecurity response evaluation"@en ;
+    hi:hasExperiment hi:CybersecurityResponseExperiment .
+
+hi:CybersecurityResponseExperiment a hi:Experiment ;
+    rdfs:label "Cybersecurity response experiment"@en ;
+    hi:hasNullHypothesis "Human-AI collaboration does not improve the accuracy or timeliness of cybersecurity response compared with static automated blocking."@en ;
+    hi:hasAlternativeHypothesis "Human-AI collaboration improves the accuracy or timeliness of cybersecurity response compared with static automated blocking."@en .
+
+hi:ProteinPredictionEvaluation a hi:Evaluation ;
+    rdfs:label "Protein prediction evaluation"@en ;
+    hi:hasExperiment hi:ProteinPredictionExperiment .
+
+hi:ProteinPredictionExperiment a hi:Experiment ;
+    rdfs:label "Protein prediction experiment"@en ;
+    hi:hasNullHypothesis "The collaborative use of AlphaFold and expert literature review does not improve identification of neuroprotective proteins."@en ;
+    hi:hasAlternativeHypothesis "The collaborative use of AlphaFold and expert literature review improves identification of neuroprotective proteins."@en .
+
+hi:LearningSupportEvaluation a hi:Evaluation ;
+    rdfs:label "Learning support evaluation"@en ;
+    hi:hasExperiment hi:LearningOutcomeExperiment .
+
+hi:LearningOutcomeExperiment a hi:Experiment ;
+    rdfs:label "Learning outcome experiment"@en ;
+    hi:hasNullHypothesis "Robot-assisted collaborative support does not improve the learner's educational outcomes."@en ;
+    hi:hasAlternativeHypothesis "Robot-assisted collaborative support improves the learner's educational outcomes."@en .
+
+### Models and methods
+hi:AlphaFoldPredictionModel a hi:Model ;
+    rdfs:label "AlphaFold prediction model"@en ;
+    hi:hasMethod hi:ProteinStructurePredictionMethod ;
+    hi:hasInputData hi:ProteinSequenceDataset ;
+    hi:hasOutputData hi:PredictedProteinStructureData .
+
+hi:ArchivalSegmentationModel a hi:Model ;
+    rdfs:label "Archival segmentation model"@en ;
+    hi:hasMethod hi:MultimodalSegmentationMethod ;
+    hi:hasInputData hi:ArchivalFootageDataset ;
+    hi:hasOutputData hi:TaggedArchivalSegments .
+
+hi:ProteinStructurePredictionMethod a hi:Method ;
+    rdfs:label "Protein structure prediction method"@en .
+
+hi:MultimodalSegmentationMethod a hi:Method ;
+    rdfs:label "Multimodal segmentation method"@en .
+
+### Data
+hi:ProteinSequenceDataset a hi:Data ;
+    rdfs:label "Protein sequence dataset"@en .
+
+hi:PredictedProteinStructureData a hi:Data ;
+    rdfs:label "Predicted protein structure data"@en .
+
+hi:ProteinLiteratureCorpus a hi:Data ;
+    rdfs:label "Protein literature corpus"@en .
+
+hi:ArchivalFootageDataset a hi:Data ;
+    rdfs:label "Archival footage dataset"@en .
+
+hi:TaggedArchivalSegments a hi:Data ;
+    rdfs:label "Tagged archival segments"@en .
+
+#################################################################
+# Student file 5
+#################################################################
+
+### domains reused from earlier aligned files:
+### hi:HealthcareDomain
+### hi:ConversationalAIDomain
+### hi:EducationDomain
+### hi:ArtificialIntelligenceResearchDomain
+
+#################################################################
+# New capabilities
+#################################################################
+
+hi:ClinicalDecisionSupportCapability a hi:Capability ;
+    rdfs:label "Clinical decision support capability"@en .
+
+hi:ExplainabilityCapability a hi:Capability ;
+    rdfs:label "Explainability capability"@en .
+
+hi:TrustAssessmentCapability a hi:Capability ;
+    rdfs:label "Trust assessment capability"@en .
+
+hi:LongTermMemoryCapability a hi:Capability ;
+    rdfs:label "Long-term memory capability"@en .
+
+hi:InteractiveModelInspectionCapability a hi:Capability ;
+    rdfs:label "Interactive model inspection capability"@en .
+
+#################################################################
+# New methods
+#################################################################
+
+hi:DeepLearningMethod a hi:Method ;
+    rdfs:label "Deep learning"@en .
+
+hi:ExplainableBoostingMethod a hi:Method ;
+    rdfs:label "Explainable boosting"@en .
+
+hi:GraphMemoryMethod a hi:Method ;
+    rdfs:label "Graph-based memory"@en .
+
+hi:KnowledgeDistillationMethod a hi:Method ;
+    rdfs:label "Knowledge distillation"@en .
+
+#################################################################
+# New models
+#################################################################
+
+hi:BrainAgePredictionModel_Instance a hi:Model ;
+    rdfs:label "Deep neural network for brain age prediction"@en ;
+    hi:hasMethod hi:DeepLearningMethod ;
+    hi:hasInputData hi:BrainImagingData ;
+    hi:hasOutputData hi:BrainAgePredictionOutput .
+
+hi:TrustAssessmentModel_Instance a hi:Model ;
+    rdfs:label "Explainable boosting model for trust calibration detection"@en ;
+    hi:hasMethod hi:ExplainableBoostingMethod ;
+    hi:hasInputData hi:EEGTrustSignalData ;
+    hi:hasOutputData hi:TrustCalibrationAssessmentData .
+
+hi:GraphMemoModel_Instance a hi:Model ;
+    rdfs:label "GraphMemo long-term memory model"@en ;
+    hi:hasMethod hi:GraphMemoryMethod ;
+    hi:hasInputData hi:LongMemoDialogueData ;
+    hi:hasOutputData hi:RetrievedMemoryData .
+
+hi:HILLInspectionModel_Instance a hi:Model ;
+    rdfs:label "Interactive latent-space inspection model"@en ;
+    hi:hasMethod hi:KnowledgeDistillationMethod ;
+    hi:hasInputData hi:CIFAR10ImageData , hi:PAMAP2SensorData ;
+    hi:hasOutputData hi:LatentSpaceInspectionData .
+
+#################################################################
+# New data
+#################################################################
+
+hi:BrainImagingData a hi:Data ;
+    rdfs:label "Brain imaging data"@en .
+
+hi:BrainAgePredictionOutput a hi:Data ;
+    rdfs:label "Brain age prediction output"@en .
+
+hi:EEGTrustSignalData a hi:Data ;
+    rdfs:label "EEG trust signal data"@en .
+
+hi:TrustCalibrationAssessmentData a hi:Data ;
+    rdfs:label "Trust calibration assessment data"@en .
+
+hi:LongMemoDialogueData a hi:Data ;
+    rdfs:label "LongMemo5 dialogue data"@en .
+
+hi:RetrievedMemoryData a hi:Data ;
+    rdfs:label "Retrieved long-term memory data"@en .
+
+hi:CIFAR10ImageData a hi:Data ;
+    rdfs:label "CIFAR-10 image data"@en .
+
+hi:PAMAP2SensorData a hi:Data ;
+    rdfs:label "PAMAP2 sensor data"@en .
+
+hi:LatentSpaceInspectionData a hi:Data ;
+    rdfs:label "Latent space inspection data"@en .
+
+#################################################################
+# New metrics
+#################################################################
+
+hi:InterpretabilityMetric a hi:Metric ;
+    rdfs:label "Interpretability"@en .
+
+hi:UsabilityMetric a hi:Metric ;
+    rdfs:label "Usability"@en .
+
+hi:ClinicalOutcomeMetric a hi:Metric ;
+    rdfs:label "Clinical outcomes"@en .
+
+hi:TrustCalibrationMetric a hi:Metric ;
+    rdfs:label "Trust calibration"@en .
+
+hi:MemoryRetentionMetric a hi:Metric ;
+    rdfs:label "Long-term memory retention"@en .
+
+hi:ModelAccuracyMetric a hi:Metric ;
+    rdfs:label "Model accuracy"@en .
+
+#################################################################
+# New contexts
+#################################################################
+
+hi:ClinicalNeurodiagnosticContext a hi:Context ;
+    rdfs:label "Clinical neurodiagnostic context"@en .
+
+hi:HumanAIDecisionRelianceContext a hi:Context ;
+    rdfs:label "Human-AI decision reliance context"@en .
+
+hi:LongTermDialogueContext a hi:Context ;
+    rdfs:label "Long-term dialogue context"@en .
+
+hi:InteractiveMLInspectionContext a hi:Context ;
+    rdfs:label "Interactive machine learning inspection context"@en .
+
+#################################################################
+# New agents
+#################################################################
+
+hi:NeurologistAgent a hi:HumanAgent ;
+    rdfs:label "Neurologist"@en ;
+    hi:hasCapability hi:ClinicalDecisionSupportCapability, hi:ExplainabilityCapability ;
+    hi:operatesInContext hi:ClinicalNeurodiagnosticContext .
+
+hi:ClinicianAgent a hi:HumanAgent ;
+    rdfs:label "Clinician"@en ;
+    hi:hasCapability hi:TrustAssessmentCapability ;
+    hi:operatesInContext hi:HumanAIDecisionRelianceContext .
+
+hi:ChatbotUserAgent a hi:HumanAgent ;
+    rdfs:label "Chatbot user"@en ;
+    hi:operatesInContext hi:LongTermDialogueContext .
+
+hi:MLPractitionerAgent a hi:HumanAgent ;
+    rdfs:label "Machine learning practitioner"@en ;
+    hi:hasCapability hi:InteractiveModelInspectionCapability ;
+    hi:operatesInContext hi:InteractiveMLInspectionContext .
+
+hi:BrainAgeSupportSystem a hi:ArtificialAgent ;
+    rdfs:label "Brain age prediction support system"@en ;
+    hi:hasCapability hi:ClinicalDecisionSupportCapability, hi:ExplainabilityCapability ;
+    hi:operatesInContext hi:ClinicalNeurodiagnosticContext .
+
+hi:TrustAssessmentSystem a hi:ArtificialAgent ;
+    rdfs:label "Trust calibration assessment system"@en ;
+    hi:hasCapability hi:TrustAssessmentCapability ;
+    hi:operatesInContext hi:HumanAIDecisionRelianceContext .
+
+hi:GraphMemoAgent a hi:ArtificialAgent ;
+    rdfs:label "GraphMemo chatbot memory system"@en ;
+    hi:hasCapability hi:LongTermMemoryCapability ;
+    hi:operatesInContext hi:LongTermDialogueContext .
+
+hi:HILLFrameworkAgent a hi:ArtificialAgent ;
+    rdfs:label "HILL interactive inspection framework"@en ;
+    hi:hasCapability hi:InteractiveModelInspectionCapability ;
+    hi:operatesInContext hi:InteractiveMLInspectionContext .
+
+#################################################################
+# New tasks
+#################################################################
+
+hi:BrainAgeAssessmentTask a hi:Task ;
+    rdfs:label "Brain age assessment"@en ;
+    hi:requiresCapability hi:ClinicalDecisionSupportCapability .
+
+hi:ExplainBrainAgePredictionTask a hi:Task ;
+    rdfs:label "Explain brain age prediction"@en ;
+    hi:requiresCapability hi:ExplainabilityCapability .
+
+hi:TrustCalibrationAssessmentTask a hi:Task ;
+    rdfs:label "Assess trust calibration"@en ;
+    hi:requiresCapability hi:TrustAssessmentCapability .
+
+hi:LongTermMemoryRetrievalTask a hi:Task ;
+    rdfs:label "Retrieve long-term dialogue memory"@en ;
+    hi:requiresCapability hi:LongTermMemoryCapability .
+
+hi:LatentSpaceInspectionTask a hi:Task ;
+    rdfs:label "Inspect latent model representations"@en ;
+    hi:requiresCapability hi:InteractiveModelInspectionCapability .
+
+#################################################################
+# New goals
+#################################################################
+
+hi:SupportBrainAgeInterpretationGoal a hi:Goal ;
+    rdfs:label "Support interpretable brain age assessment"@en ;
+    hi:requiresTask hi:BrainAgeAssessmentTask , hi:ExplainBrainAgePredictionTask .
+
+hi:DetectTrustCalibrationGoal a hi:Goal ;
+    rdfs:label "Detect trust calibration in human-AI interaction"@en ;
+    hi:requiresTask hi:TrustCalibrationAssessmentTask .
+
+hi:MaintainLongTermConversationGoal a hi:Goal ;
+    rdfs:label "Maintain coherent long-term conversation"@en ;
+    hi:requiresTask hi:LongTermMemoryRetrievalTask .
+
+hi:ImproveHumanModelInspectionGoal a hi:Goal ;
+    rdfs:label "Improve human inspection of learned model representations"@en ;
+    hi:requiresTask hi:LatentSpaceInspectionTask .
+
+#################################################################
+# Use cases and teams
+#################################################################
+
+hi:BrainAgePredictionUseCase a hi:UseCase ;
+    rdfs:label "Explainable brain age prediction"@en ;
+    hi:hasDomain hi:HealthcareDomain ;
+    hi:hasHITeam hi:BrainAgePredictionTeam .
+
+hi:BrainAgePredictionTeam a hi:HITeam ;
+    rdfs:label "Brain age prediction HI team"@en ;
+    hi:hasMember hi:NeurologistAgent , hi:BrainAgeSupportSystem ;
+    hi:hasGoal hi:SupportBrainAgeInterpretationGoal ;
+    hi:isInfluencedBy hi:ClinicalNeurodiagnosticContext .
+
+hi:TrustCalibrationUseCase a hi:UseCase ;
+    rdfs:label "EEG-based trust calibration assessment"@en ;
+    hi:hasDomain hi:HealthcareDomain ;
+    hi:hasHITeam hi:TrustCalibrationTeam .
+
+hi:TrustCalibrationTeam a hi:HITeam ;
+    rdfs:label "Trust calibration HI team"@en ;
+    hi:hasMember hi:ClinicianAgent , hi:TrustAssessmentSystem ;
+    hi:hasGoal hi:DetectTrustCalibrationGoal ;
+    hi:isInfluencedBy hi:HumanAIDecisionRelianceContext .
+
+hi:LongTermChatbotMemoryUseCase a hi:UseCase ;
+    rdfs:label "Graph-based long-term chatbot memory"@en ;
+    hi:hasDomain hi:ConversationalAIDomain ;
+    hi:hasHITeam hi:LongTermChatbotMemoryTeam .
+
+hi:LongTermChatbotMemoryTeam a hi:HITeam ;
+    rdfs:label "Long-term chatbot memory HI team"@en ;
+    hi:hasMember hi:ChatbotUserAgent , hi:GraphMemoAgent ;
+    hi:hasGoal hi:MaintainLongTermConversationGoal ;
+    hi:isInfluencedBy hi:LongTermDialogueContext .
+
+hi:HILLInspectionUseCase a hi:UseCase ;
+    rdfs:label "Human in the Latent Loop model inspection"@en ;
+    hi:hasDomain hi:ArtificialIntelligenceResearchDomain ;
+    hi:hasHITeam hi:HILLInspectionTeam .
+
+hi:HILLInspectionTeam a hi:HITeam ;
+    rdfs:label "HILL inspection HI team"@en ;
+    hi:hasMember hi:MLPractitionerAgent , hi:HILLFrameworkAgent ;
+    hi:hasGoal hi:ImproveHumanModelInspectionGoal ;
+    hi:isInfluencedBy hi:InteractiveMLInspectionContext .
+
+#################################################################
+# Task executions and interactions
+#################################################################
+
+hi:BrainAgeAssessmentExecution a hi:TaskExecution ;
+    rdfs:label "Brain age assessment execution"@en ;
+    hi:realizesTask hi:BrainAgeAssessmentTask ;
+    hi:towardsGoal hi:SupportBrainAgeInterpretationGoal ;
+    hi:performedBy hi:BrainAgeSupportSystem ;
+    hi:usesModel hi:BrainAgePredictionModel_Instance ;
+    hi:hasInputData hi:BrainImagingData ;
+    hi:hasOutputData hi:BrainAgePredictionOutput ;
+    hi:hasInteractionEpisode hi:BrainAgeInterpretationInteraction ;
+    hi:evaluatedBy hi:BrainAgeEvaluation .
+
+hi:BrainAgeExplanationExecution a hi:TaskExecution ;
+    rdfs:label "Brain age explanation execution"@en ;
+    hi:realizesTask hi:ExplainBrainAgePredictionTask ;
+    hi:towardsGoal hi:SupportBrainAgeInterpretationGoal ;
+    hi:performedBy hi:BrainAgeSupportSystem ;
+    hi:usesModel hi:BrainAgePredictionModel_Instance ;
+    hi:hasInputData hi:BrainAgePredictionOutput ;
+    hi:hasOutputData hi:BrainAgeExplanationData ;
+    hi:hasInteractionEpisode hi:BrainAgeInterpretationInteraction ;
+    hi:evaluatedBy hi:BrainAgeEvaluation .
+
+hi:BrainAgeExplanationData a hi:Data ;
+    rdfs:label "Brain age explanation data"@en .
+
+hi:BrainAgeInterpretationInteraction a hi:Interaction ;
+    rdfs:label "Brain age interpretation interaction"@en ;
+    hi:hasAgentInvolved hi:NeurologistAgent , hi:BrainAgeSupportSystem .
+
+hi:TrustCalibrationExecution a hi:TaskExecution ;
+    rdfs:label "Trust calibration assessment execution"@en ;
+    hi:realizesTask hi:TrustCalibrationAssessmentTask ;
+    hi:towardsGoal hi:DetectTrustCalibrationGoal ;
+    hi:performedBy hi:TrustAssessmentSystem ;
+    hi:usesModel hi:TrustAssessmentModel_Instance ;
+    hi:hasInputData hi:EEGTrustSignalData ;
+    hi:hasOutputData hi:TrustCalibrationAssessmentData ;
+    hi:hasInteractionEpisode hi:TrustCalibrationInteraction ;
+    hi:evaluatedBy hi:TrustCalibrationEvaluation .
+
+hi:TrustCalibrationInteraction a hi:Interaction ;
+    rdfs:label "Trust calibration review interaction"@en ;
+    hi:hasAgentInvolved hi:ClinicianAgent , hi:TrustAssessmentSystem .
+
+hi:LongTermMemoryRetrievalExecution a hi:TaskExecution ;
+    rdfs:label "Long-term memory retrieval execution"@en ;
+    hi:realizesTask hi:LongTermMemoryRetrievalTask ;
+    hi:towardsGoal hi:MaintainLongTermConversationGoal ;
+    hi:performedBy hi:GraphMemoAgent ;
+    hi:usesModel hi:GraphMemoModel_Instance ;
+    hi:hasInputData hi:LongMemoDialogueData ;
+    hi:hasOutputData hi:RetrievedMemoryData ;
+    hi:hasInteractionEpisode hi:LongTermConversationInteraction ;
+    hi:evaluatedBy hi:LongTermMemoryEvaluation .
+
+hi:LongTermConversationInteraction a hi:Interaction ;
+    rdfs:label "Long-term conversation interaction"@en ;
+    hi:hasAgentInvolved hi:ChatbotUserAgent , hi:GraphMemoAgent .
+
+hi:HILLInspectionExecution a hi:TaskExecution ;
+    rdfs:label "Latent-space inspection execution"@en ;
+    hi:realizesTask hi:LatentSpaceInspectionTask ;
+    hi:towardsGoal hi:ImproveHumanModelInspectionGoal ;
+    hi:performedBy hi:HILLFrameworkAgent ;
+    hi:usesModel hi:HILLInspectionModel_Instance ;
+    hi:hasInputData hi:CIFAR10ImageData , hi:PAMAP2SensorData ;
+    hi:hasOutputData hi:LatentSpaceInspectionData ;
+    hi:hasInteractionEpisode hi:HILLInspectionInteraction ;
+    hi:evaluatedBy hi:HILLEvaluation .
+
+hi:HILLInspectionInteraction a hi:Interaction ;
+    rdfs:label "HILL inspection interaction"@en ;
+    hi:hasAgentInvolved hi:MLPractitionerAgent , hi:HILLFrameworkAgent .
+
+#################################################################
+# Agent-to-execution links
+#################################################################
+
+hi:BrainAgeSupportSystem hi:performsExecution hi:BrainAgeAssessmentExecution , hi:BrainAgeExplanationExecution .
+hi:TrustAssessmentSystem hi:performsExecution hi:TrustCalibrationExecution .
+hi:GraphMemoAgent hi:performsExecution hi:LongTermMemoryRetrievalExecution .
+hi:HILLFrameworkAgent hi:performsExecution hi:HILLInspectionExecution .
+
+#################################################################
+# Evaluations and experiments
+#################################################################
+
+hi:BrainAgeEvaluation a hi:Evaluation ;
+    rdfs:label "Brain age prediction evaluation"@en ;
+    hi:hasExperiment hi:BrainAgeExperiment ;
+    hi:hasMetricConcept hi:InterpretabilityMetric , hi:UsabilityMetric .
+
+hi:BrainAgeExperiment a hi:Experiment ;
+    rdfs:label "Brain age prediction experiment"@en ;
+    hi:hasMetricTested hi:InterpretabilityMetric , hi:UsabilityMetric ;
+    hi:hasNullHypothesis "Explainable support does not improve neurologists' ability to interpret brain age predictions."@en ;
+    hi:hasAlternativeHypothesis "Explainable support improves neurologists' interpretation of brain age predictions."@en .
+
+hi:TrustCalibrationEvaluation a hi:Evaluation ;
+    rdfs:label "Trust calibration evaluation"@en ;
+    hi:hasExperiment hi:TrustCalibrationExperiment ;
+    hi:hasMetricConcept hi:TrustCalibrationMetric .
+
+hi:TrustCalibrationExperiment a hi:Experiment ;
+    rdfs:label "Trust calibration detection experiment"@en ;
+    hi:hasMetricTested hi:TrustCalibrationMetric ;
+    hi:hasNullHypothesis "EEG-based assessment does not distinguish calibrated, over-trusting, and under-trusting human-AI interaction states."@en ;
+    hi:hasAlternativeHypothesis "EEG-based assessment distinguishes calibrated, over-trusting, and under-trusting human-AI interaction states."@en .
+
+hi:LongTermMemoryEvaluation a hi:Evaluation ;
+    rdfs:label "Long-term chatbot memory evaluation"@en ;
+    hi:hasExperiment hi:LongTermMemoryExperiment ;
+    hi:hasMetricConcept hi:MemoryRetentionMetric .
+
+hi:LongTermMemoryExperiment a hi:Experiment ;
+    rdfs:label "Long-term memory retrieval experiment"@en ;
+    hi:hasMetricTested hi:MemoryRetentionMetric ;
+    hi:hasNullHypothesis "Graph-based memory does not improve long-term dialogue continuity."@en ;
+    hi:hasAlternativeHypothesis "Graph-based memory improves long-term dialogue continuity."@en .
+
+hi:HILLEvaluation a hi:Evaluation ;
+    rdfs:label "HILL inspection evaluation"@en ;
+    hi:hasExperiment hi:HILLExperiment ;
+    hi:hasMetricConcept hi:ModelAccuracyMetric , hi:UsabilityMetric .
+
+hi:HILLExperiment a hi:Experiment ;
+    rdfs:label "HILL model inspection experiment"@en ;
+    hi:hasMetricTested hi:ModelAccuracyMetric , hi:UsabilityMetric ;
+    hi:hasNullHypothesis "Interactive latent-space inspection does not improve human understanding or effective inspection of model behaviour."@en ;
+    hi:hasAlternativeHypothesis "Interactive latent-space inspection improves human understanding and effective inspection of model behaviour."@en .
+
+
+##################################################################
+# Student file 6
+##################################################################
+
+#################################################################
+# Domains
+#################################################################
+
+hi:VirtualRealityDomain a hi:Domain ;
+    rdfs:label "Virtual reality"@en .
+
+hi:GovernanceDomain a hi:Domain ;
+    rdfs:label "Governance and public policy"@en .
+
+
+#################################################################
+# Use Case 1 — VR Conversational Interaction
+#################################################################
+
+hi:VRConversationalInteractionUseCase a hi:UseCase ;
+    rdfs:label "Gaze-aware conversational interaction in VR"@en ;
+    hi:hasDomain hi:VirtualRealityDomain ;
+    hi:hasHITeam hi:VRDialogueTeam .
+
+hi:VRDialogueTeam a hi:HITeam ;
+    rdfs:label "Human–AI VR dialogue team"@en ;
+    hi:hasMember hi:HumanParticipant ;
+    hi:hasMember hi:VRConversationalAgent ;
+    hi:hasGoal hi:VRDialogueGoal .
+
+hi:VRDialogueGoal a hi:Goal ;
+    rdfs:label "Maintain natural conversational interaction in VR"@en ;
+    hi:requiresTask hi:GazeAwareDialogueTask .
+
+hi:GazeAwareDialogueTask a hi:Task ;
+    rdfs:label "Perform gaze-aware dialogue management"@en ;
+    hi:requiresCapability hi:Communication ;
+    hi:requiresCapability hi:Adaptiveness .
+
+hi:GazeAwareDialogueExecution a hi:TaskExecution ;
+    rdfs:label "Execution of gaze-aware VR dialogue"@en ;
+    hi:realizesTask hi:GazeAwareDialogueTask ;
+    hi:towardsGoal hi:VRDialogueGoal ;
+    hi:hasInteractionEpisode hi:VRDialogueInteraction .
+
+hi:HumanParticipant a hi:HumanAgent ;
+    rdfs:label "VR user"@en ;
+    hi:performsExecution hi:GazeAwareDialogueExecution .
+
+hi:VRConversationalAgent a hi:ArtificialAgent ;
+    rdfs:label "Conversational VR agent"@en ;
+    hi:performsExecution hi:GazeAwareDialogueExecution .
+
+hi:VRDialogueInteraction a hi:Interaction ;
+    rdfs:label "Dialogue interaction in VR environment"@en ;
+    hi:hasAgentInvolved hi:HumanParticipant ;
+    hi:hasAgentInvolved hi:VRConversationalAgent .
+
+
+#################################################################
+# Use Case 2 — Public Policy Simulation
+#################################################################
+
+hi:PublicPolicySimulationUseCase a hi:UseCase ;
+    rdfs:label "Participatory public policy simulation"@en ;
+    hi:hasDomain hi:GovernanceDomain ;
+    hi:hasHITeam hi:PolicySimulationTeam .
+
+hi:PolicySimulationTeam a hi:HITeam ;
+    rdfs:label "Human–AI policy simulation team"@en ;
+    hi:hasMember hi:PolicyAnalyst ;
+    hi:hasMember hi:PolicySimulationAgent ;
+    hi:hasGoal hi:PolicySimulationGoal .
+
+hi:PolicySimulationGoal a hi:Goal ;
+    rdfs:label "Evaluate potential policy outcomes through simulation"@en ;
+    hi:requiresTask hi:ParticipatoryPolicySimulationTask .
+
+hi:ParticipatoryPolicySimulationTask a hi:Task ;
+    rdfs:label "Simulate policy scenarios interactively"@en ;
+    hi:requiresCapability hi:Communication ;
+    hi:requiresCapability hi:Transparency .
+
+hi:PolicySimulationExecution a hi:TaskExecution ;
+    rdfs:label "Execution of participatory policy simulation"@en ;
+    hi:realizesTask hi:ParticipatoryPolicySimulationTask ;
+    hi:towardsGoal hi:PolicySimulationGoal ;
+    hi:hasInteractionEpisode hi:PolicySimulationInteraction .
+
+hi:PolicyAnalyst a hi:HumanAgent ;
+    rdfs:label "Policy analyst"@en ;
+    hi:performsExecution hi:PolicySimulationExecution .
+
+hi:PolicySimulationAgent a hi:ArtificialAgent ;
+    rdfs:label "Policy simulation agent"@en ;
+    hi:performsExecution hi:PolicySimulationExecution .
+
+hi:PolicySimulationInteraction a hi:Interaction ;
+    rdfs:label "Human–AI policy discussion interaction"@en ;
+    hi:hasAgentInvolved hi:PolicyAnalyst ;
+    hi:hasAgentInvolved hi:PolicySimulationAgent .
+
+#################################################################
+# Student file 7
+#################################################################
+
+#################################################################
+# domains 
+#################################################################
+
+hi:CausalDiscoveryDomain a hi:Domain ;
+    rdfs:label "Causal discovery"@en .
+
+hi:BiometricsAndForensicsDomain a hi:Domain ;
+    rdfs:label "Biometrics and forensics"@en .
+
+hi:PublicPolicyDomain a hi:Domain ;
+    rdfs:label "Public policy"@en .
+
+#################################################################
+# Additional methods
+#################################################################
+
+hi:LinearRegressionMethod a hi:Method ;
+    rdfs:label "Linear regression"@en .
+
+hi:AgentBasedSocialSimulationMethod a hi:Method ;
+    rdfs:label "Agent-based social simulation"@en .
+
+hi:DecisionSupportMethod a hi:Method ;
+    rdfs:label "Decision support"@en .
+
+#################################################################
+# Additional models
+#################################################################
+
+hi:CausalDiscoveryModel a hi:Model ;
+    rdfs:label "Autonomous causal discovery model"@en ;
+    hi:hasMethod hi:LinearRegressionMethod .
+
+hi:FaceMatchingDecisionSupportModel a hi:Model ;
+    rdfs:label "Face matching decision support model"@en ;
+    hi:hasMethod hi:DecisionSupportMethod .
+
+hi:PolicySimulationModel a hi:Model ;
+    rdfs:label "Policy simulation model"@en ;
+    hi:hasMethod hi:AgentBasedSocialSimulationMethod .
+
+#################################################################
+# Additional metrics
+#################################################################
+
+hi:StrategyPerformanceMetric a hi:Metric ;
+    rdfs:label "Strategy performance"@en .
+
+hi:DecisionQualityMetric a hi:Metric ;
+    rdfs:label "Decision quality"@en .
+
+hi:PolicyScenarioOutcomeMetric a hi:Metric ;
+    rdfs:label "Policy scenario outcome"@en .
+
+#################################################################
+# Use Case 1 — Causal discovery through repeated interventions
+#################################################################
+
+hi:CausalDiscoveryUseCase a hi:UseCase ;
+    rdfs:label "Causal discovery through repeated interventions"@en ;
+    hi:hasDomain hi:CausalDiscoveryDomain ;
+    hi:hasHITeam hi:CausalDiscoveryTeam .
+
+hi:CausalDiscoveryTeam a hi:HITeam ;
+    rdfs:label "Causal discovery HI team"@en ;
+    hi:hasMember hi:AutonomousCausalLearner ;
+    hi:hasMember hi:HumanExperimenter ;
+    hi:hasGoal hi:ReconstructHiddenCausalDAGGoal ;
+    hi:isInfluencedBy hi:SimulatedWorldContext .
+
+hi:AutonomousCausalLearner a hi:ArtificialAgent ;
+    rdfs:label "Autonomous causal learner"@en ;
+    hi:operatesInContext hi:SimulatedWorldContext ;
+    hi:hasCapability hi:InterveneOnActionableNodes ;
+    hi:hasCapability hi:ApplyLinearRegression ;
+    hi:performsExecution hi:RepeatedInterventionsExecution .
+
+hi:HumanExperimenter a hi:HumanAgent ;
+    rdfs:label "Human experimenter"@en ;
+    hi:operatesInContext hi:SimulatedWorldContext ;
+    hi:performsExecution hi:RepeatedInterventionsExecution .
+
+hi:SimulatedWorldContext a hi:Context ;
+    rdfs:label "Simulated world with hidden causal structure"@en ;
+    hi:hasInfluenceOn hi:CausalDiscoveryTeam .
+
+hi:ReconstructHiddenCausalDAGGoal a hi:Goal ;
+    rdfs:label "Reconstruct hidden causal DAG"@en ;
+    hi:requiresTask hi:PerformInterventionsTask ;
+    hi:requiresTask hi:InferCausalLinksTask ;
+    hi:requiresTask hi:EvaluateStrategiesTask .
+
+hi:PerformInterventionsTask a hi:Task ;
+    rdfs:label "Perform interventions"@en ;
+    hi:requiresCapability hi:InterveneOnActionableNodes .
+
+hi:InferCausalLinksTask a hi:Task ;
+    rdfs:label "Infer causal links"@en ;
+    hi:requiresCapability hi:ApplyLinearRegression .
+
+hi:EvaluateStrategiesTask a hi:Task ;
+    rdfs:label "Evaluate intervention strategies"@en ;
+    hi:requiresCapability hi:ApplyLinearRegression .
+
+hi:InterveneOnActionableNodes a hi:Capability ;
+    rdfs:label "Intervene on actionable nodes"@en ;
+    hi:allowsTask hi:PerformInterventionsTask .
+
+hi:ApplyLinearRegression a hi:Capability ;
+    rdfs:label "Apply linear regression"@en ;
+    hi:allowsTask hi:InferCausalLinksTask ;
+    hi:allowsTask hi:EvaluateStrategiesTask .
+
+hi:RepeatedInterventionsExecution a hi:TaskExecution ;
+    rdfs:label "Repeated interventions execution"@en ;
+    hi:realizesTask hi:PerformInterventionsTask ;
+    hi:realizesTask hi:InferCausalLinksTask ;
+    hi:realizesTask hi:EvaluateStrategiesTask ;
+    hi:towardsGoal hi:ReconstructHiddenCausalDAGGoal ;
+    hi:performedBy hi:AutonomousCausalLearner ;
+    hi:performedBy hi:HumanExperimenter ;
+    hi:usesModel hi:CausalDiscoveryModel ;
+    hi:evaluatedBy hi:StrategyComparisonEvaluation ;
+    hi:hasInteractionEpisode hi:CausalDiscoveryInteraction .
+
+hi:CausalDiscoveryInteraction a hi:Interaction ;
+    rdfs:label "Human–AI causal discovery interaction"@en ;
+    hi:hasAgentInvolved hi:AutonomousCausalLearner ;
+    hi:hasAgentInvolved hi:HumanExperimenter .
+
+hi:StrategyComparisonEvaluation a hi:Evaluation ;
+    rdfs:label "Strategy comparison evaluation"@en ;
+    hi:hasExperiment hi:DAG20MaxStrategyExperiment ;
+    hi:hasExperiment hi:DAG20MinStrategyExperiment ;
+    hi:hasExperiment hi:DAG20RandomStrategyExperiment ;
+    hi:hasExperiment hi:DAG20PureRandomStrategyExperiment .
+
+hi:DAG20MaxStrategyExperiment a hi:Experiment ;
+    rdfs:label "DAG20 max strategy experiment"@en ;
+    hi:hasMetricTested hi:StrategyPerformanceMetric .
+
+hi:DAG20MinStrategyExperiment a hi:Experiment ;
+    rdfs:label "DAG20 min strategy experiment"@en ;
+    hi:hasMetricTested hi:StrategyPerformanceMetric .
+
+hi:DAG20RandomStrategyExperiment a hi:Experiment ;
+    rdfs:label "DAG20 random strategy experiment"@en ;
+    hi:hasMetricTested hi:StrategyPerformanceMetric .
+
+hi:DAG20PureRandomStrategyExperiment a hi:Experiment ;
+    rdfs:label "DAG20 pure random strategy experiment"@en ;
+    hi:hasMetricTested hi:StrategyPerformanceMetric .
+
+#################################################################
+# Use Case 2 — Human-AI face matching decision support
+#################################################################
+
+hi:FaceMatchingDecisionSupportUseCase a hi:UseCase ;
+    rdfs:label "Human–AI face matching decision support"@en ;
+    hi:hasDomain hi:BiometricsAndForensicsDomain ;
+    hi:hasHITeam hi:FaceMatchingHITeam .
+
+hi:FaceMatchingHITeam a hi:HITeam ;
+    rdfs:label "Face matching HI team"@en ;
+    hi:hasMember hi:HumanFaceMatcher ;
+    hi:hasMember hi:FaceMatchingDecisionSupportSystem ;
+    hi:hasGoal hi:ImproveFaceMatchingDecisionsGoal ;
+    hi:isInfluencedBy hi:FaceMatchingStudyContext .
+
+hi:FaceMatchingStudyContext a hi:Context ;
+    rdfs:label "Face matching study context"@en ;
+    hi:hasInfluenceOn hi:FaceMatchingHITeam .
+
+hi:HumanFaceMatcher a hi:HumanAgent ;
+    rdfs:label "Human face matcher"@en ;
+    hi:operatesInContext hi:FaceMatchingStudyContext ;
+    hi:hasCapability hi:HumanFaceMatchingJudgment ;
+    hi:performsExecution hi:FaceMatchingTaskExecution .
+
+hi:FaceMatchingDecisionSupportSystem a hi:ArtificialAgent ;
+    rdfs:label "Face matching decision support system"@en ;
+    hi:operatesInContext hi:FaceMatchingStudyContext ;
+    hi:hasCapability hi:ProvideMatchingSuggestions ;
+    hi:hasCapability hi:ComputeInteractionMetrics ;
+    hi:performsExecution hi:FaceMatchingTaskExecution .
+
+hi:ImproveFaceMatchingDecisionsGoal a hi:Goal ;
+    rdfs:label "Improve face matching decisions"@en ;
+    hi:requiresTask hi:FaceMatchingNormalSetTask ;
+    hi:requiresTask hi:FaceMatchingHardSetTask ;
+    hi:requiresTask hi:AssessInfluenceAndConfirmationTask .
+
+hi:FaceMatchingNormalSetTask a hi:Task ;
+    rdfs:label "Face matching on normal set"@en ;
+    hi:requiresCapability hi:HumanFaceMatchingJudgment ;
+    hi:requiresCapability hi:ProvideMatchingSuggestions .
+
+hi:FaceMatchingHardSetTask a hi:Task ;
+    rdfs:label "Face matching on hard set"@en ;
+    hi:requiresCapability hi:HumanFaceMatchingJudgment ;
+    hi:requiresCapability hi:ProvideMatchingSuggestions .
+
+hi:AssessInfluenceAndConfirmationTask a hi:Task ;
+    rdfs:label "Assess influence and confirmation"@en ;
+    hi:requiresCapability hi:ComputeInteractionMetrics .
+
+hi:HumanFaceMatchingJudgment a hi:Capability ;
+    rdfs:label "Human face matching judgment"@en ;
+    hi:allowsTask hi:FaceMatchingNormalSetTask ;
+    hi:allowsTask hi:FaceMatchingHardSetTask .
+
+hi:ProvideMatchingSuggestions a hi:Capability ;
+    rdfs:label "Provide matching suggestions"@en ;
+    hi:allowsTask hi:FaceMatchingNormalSetTask ;
+    hi:allowsTask hi:FaceMatchingHardSetTask .
+
+hi:ComputeInteractionMetrics a hi:Capability ;
+    rdfs:label "Compute interaction metrics"@en ;
+    hi:allowsTask hi:AssessInfluenceAndConfirmationTask .
+
+hi:FaceMatchingTaskExecution a hi:TaskExecution ;
+    rdfs:label "Face matching task execution"@en ;
+    hi:realizesTask hi:FaceMatchingNormalSetTask ;
+    hi:realizesTask hi:FaceMatchingHardSetTask ;
+    hi:realizesTask hi:AssessInfluenceAndConfirmationTask ;
+    hi:towardsGoal hi:ImproveFaceMatchingDecisionsGoal ;
+    hi:performedBy hi:HumanFaceMatcher ;
+    hi:performedBy hi:FaceMatchingDecisionSupportSystem ;
+    hi:usesModel hi:FaceMatchingDecisionSupportModel ;
+    hi:evaluatedBy hi:DecisionSupportEvaluation ;
+    hi:hasInteractionEpisode hi:HumanDSSInteraction .
+
+hi:HumanDSSInteraction a hi:Interaction ;
+    rdfs:label "Human decision-support interaction"@en ;
+    hi:hasAgentInvolved hi:HumanFaceMatcher ;
+    hi:hasAgentInvolved hi:FaceMatchingDecisionSupportSystem .
+
+hi:DecisionSupportEvaluation a hi:Evaluation ;
+    rdfs:label "Decision support evaluation"@en ;
+    hi:hasExperiment hi:NoMachineExperiment ;
+    hi:hasExperiment hi:Static95Experiment ;
+    hi:hasExperiment hi:Static50Experiment ;
+    hi:hasExperiment hi:Static5Experiment ;
+    hi:hasExperiment hi:IncreasingConfidenceNotifyExperiment ;
+    hi:hasExperiment hi:IncreasingConfidenceNoNotifyExperiment ;
+    hi:hasExperiment hi:DecreasingConfidenceNotifyExperiment ;
+    hi:hasExperiment hi:DecreasingConfidenceNoNotifyExperiment .
+
+hi:NoMachineExperiment a hi:Experiment ;
+    rdfs:label "No machine experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:Static95Experiment a hi:Experiment ;
+    rdfs:label "Static 95 experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:Static50Experiment a hi:Experiment ;
+    rdfs:label "Static 50 experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:Static5Experiment a hi:Experiment ;
+    rdfs:label "Static 5 experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:IncreasingConfidenceNotifyExperiment a hi:Experiment ;
+    rdfs:label "Increasing confidence notify experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:IncreasingConfidenceNoNotifyExperiment a hi:Experiment ;
+    rdfs:label "Increasing confidence no notify experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:DecreasingConfidenceNotifyExperiment a hi:Experiment ;
+    rdfs:label "Decreasing confidence notify experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+hi:DecreasingConfidenceNoNotifyExperiment a hi:Experiment ;
+    rdfs:label "Decreasing confidence no notify experiment"@en ;
+    hi:hasMetricTested hi:DecisionQualityMetric .
+
+#################################################################
+# Use Case 3 — Hybrid human policy modeling with simulations
+#################################################################
+
+hi:HybridHumanPolicyModelingUseCase a hi:UseCase ;
+    rdfs:label "Hybrid human policy modeling with simulations"@en ;
+    hi:hasDomain hi:PublicPolicyDomain ;
+    hi:hasHITeam hi:HybridHumanPolicyTeam .
+
+hi:HybridHumanPolicyTeam a hi:HITeam ;
+    rdfs:label "Hybrid human policy team"@en ;
+    hi:hasMember hi:HealthcarePolicyMaker ;
+    hi:hasMember hi:ABSSSimulationSystem ;
+    hi:hasGoal hi:SupportHealthcarePolicyDecisionsGoal ;
+    hi:isInfluencedBy hi:HealthcarePolicyContext .
+
+hi:HealthcarePolicyContext a hi:Context ;
+    rdfs:label "Healthcare policy context"@en ;
+    hi:hasInfluenceOn hi:HybridHumanPolicyTeam .
+
+hi:HealthcarePolicyMaker a hi:HumanAgent ;
+    rdfs:label "Healthcare policy maker"@en ;
+    hi:operatesInContext hi:HealthcarePolicyContext ;
+    hi:hasCapability hi:QualitativeExpertJudgment ;
+    hi:performsExecution hi:ABSSWhatIfAnalysisExecution .
+
+hi:ABSSSimulationSystem a hi:ArtificialAgent ;
+    rdfs:label "Agent-based social simulation system"@en ;
+    hi:operatesInContext hi:HealthcarePolicyContext ;
+    hi:hasCapability hi:SimulateSocialInteractions ;
+    hi:hasCapability hi:ProduceSimulationInsights ;
+    hi:performsExecution hi:ABSSWhatIfAnalysisExecution .
+
+hi:SupportHealthcarePolicyDecisionsGoal a hi:Goal ;
+    rdfs:label "Support healthcare policy decisions"@en ;
+    hi:requiresTask hi:RunSocialSimulationsTask ;
+    hi:requiresTask hi:InterpretSimulationResultsTask ;
+    hi:requiresTask hi:RefinePolicyScenariosTask .
+
+hi:RunSocialSimulationsTask a hi:Task ;
+    rdfs:label "Run social simulations"@en ;
+    hi:requiresCapability hi:SimulateSocialInteractions .
+
+hi:InterpretSimulationResultsTask a hi:Task ;
+    rdfs:label "Interpret simulation results"@en ;
+    hi:requiresCapability hi:QualitativeExpertJudgment ;
+    hi:requiresCapability hi:ProduceSimulationInsights .
+
+hi:RefinePolicyScenariosTask a hi:Task ;
+    rdfs:label "Refine policy scenarios"@en ;
+    hi:requiresCapability hi:QualitativeExpertJudgment ;
+    hi:requiresCapability hi:ProduceSimulationInsights .
+
+hi:QualitativeExpertJudgment a hi:Capability ;
+    rdfs:label "Qualitative expert judgment"@en ;
+    hi:allowsTask hi:InterpretSimulationResultsTask ;
+    hi:allowsTask hi:RefinePolicyScenariosTask .
+
+hi:SimulateSocialInteractions a hi:Capability ;
+    rdfs:label "Simulate social interactions"@en ;
+    hi:allowsTask hi:RunSocialSimulationsTask .
+
+hi:ProduceSimulationInsights a hi:Capability ;
+    rdfs:label "Produce simulation insights"@en ;
+    hi:allowsTask hi:InterpretSimulationResultsTask ;
+    hi:allowsTask hi:RefinePolicyScenariosTask .
+
+hi:ABSSWhatIfAnalysisExecution a hi:TaskExecution ;
+    rdfs:label "ABSS what-if analysis execution"@en ;
+    hi:realizesTask hi:RunSocialSimulationsTask ;
+    hi:realizesTask hi:InterpretSimulationResultsTask ;
+    hi:realizesTask hi:RefinePolicyScenariosTask ;
+    hi:towardsGoal hi:SupportHealthcarePolicyDecisionsGoal ;
+    hi:performedBy hi:HealthcarePolicyMaker ;
+    hi:performedBy hi:ABSSSimulationSystem ;
+    hi:usesModel hi:PolicySimulationModel ;
+    hi:evaluatedBy hi:PolicyScenarioEvaluation ;
+    hi:hasInteractionEpisode hi:PolicySimulationInteraction .
+
+hi:PolicySimulationInteraction a hi:Interaction ;
+    rdfs:label "Human–AI policy simulation interaction"@en ;
+    hi:hasAgentInvolved hi:HealthcarePolicyMaker ;
+    hi:hasAgentInvolved hi:ABSSSimulationSystem .
+
+hi:PolicyScenarioEvaluation a hi:Evaluation ;
+    rdfs:label "Policy scenario evaluation"@en ;
+    hi:hasExperiment hi:InSilicoPolicyInterventionExperiment .
+
+hi:InSilicoPolicyInterventionExperiment a hi:Experiment ;
+    rdfs:label "In silico policy intervention experiment"@en ;
+    hi:hasMetricTested hi:PolicyScenarioOutcomeMetric .
