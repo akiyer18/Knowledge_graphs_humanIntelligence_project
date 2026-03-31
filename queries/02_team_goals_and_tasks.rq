@@ -1,0 +1,9 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?team ?goal ?task
+WHERE {
+  ?team a hi:HITeam ;
+        hi:hasGoal ?goal .
+  ?goal hi:requiresTask ?task .
+}
+ORDER BY ?team ?goal ?task

@@ -1,0 +1,10 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?execution ?task ?agent ?model
+WHERE {
+  ?execution a hi:TaskExecution ;
+             hi:realizesTask ?task ;
+             hi:performedBy ?agent .
+  OPTIONAL { ?execution hi:usesModel ?model . }
+}
+ORDER BY ?execution ?task ?agent

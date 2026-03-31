@@ -1,0 +1,9 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?evaluation ?experiment ?metric
+WHERE {
+  ?evaluation a hi:Evaluation ;
+              hi:hasExperiment ?experiment .
+  OPTIONAL { ?experiment hi:hasMetricTested ?metric . }
+}
+ORDER BY ?evaluation ?experiment ?metric

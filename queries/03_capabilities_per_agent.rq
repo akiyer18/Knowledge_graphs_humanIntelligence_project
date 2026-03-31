@@ -1,0 +1,8 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?capability (COUNT(DISTINCT ?agent) AS ?agentCount)
+WHERE {
+  ?agent hi:hasCapability ?capability .
+}
+GROUP BY ?capability
+ORDER BY DESC(?agentCount) ?capability

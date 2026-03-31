@@ -1,0 +1,9 @@
+PREFIX hi: <https://w3id.org/hi-ontology#>
+
+SELECT ?useCase ?domain ?team
+WHERE {
+  ?useCase a hi:UseCase ;
+           hi:hasDomain ?domain ;
+           hi:hasHITeam ?team .
+}
+ORDER BY ?useCase
