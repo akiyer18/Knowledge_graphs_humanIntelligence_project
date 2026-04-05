@@ -2,15 +2,43 @@ from __future__ import annotations
 
 import argparse
 import csv
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
-from rdflib import Graph, Literal
+from rdflib import BNode, Graph, Literal, URIRef
 
 
-QUERY_DIR = Path("queries")
-DEFAULT_TTL = Path("Data/hi-ontology-populated.ttl")
-DEFAULT_EDGES = Path("outputs/resource_edges.tsv")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+QUERY_DIR = REPO_ROOT / "step4_queries"
+DEFAULT_TTL = REPO_ROOT / "Data/hi-ontology-populated.ttl"
+DEFAULT_EDGES = REPO_ROOT / "step4_outputs" / "resource_edges.tsv"
+HI_NAMESPACE = "https://w3id.org/hi-ontology#"
+OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#"
+
+
+def shorten_term(term: URIRef | BNode | Literal) -> str:
+    if isinstance(term, BNode):
+        return f"_:{term}"
+
+    text = str(term)
+    if text.startswith(HI_NAMESPACE):
+        return f"hi:{text.removeprefix(HI_NAMESPACE)}"
+    if text.startswith(OWL_NAMESPACE):
+        return f"owl:{text.removeprefix(OWL_NAMESPACE)}"
+    return text
+
+
+def term_namespace(term: URIRef | BNode | Literal) -> str | None:
+    if isinstance(term, (Literal, BNode)):
+        return None
+
+    text = str(term)
+    if "#" in text:
+        return text.rsplit("#", 1)[0] + "#"
+    if "/" in text:
+        return text.rsplit("/", 1)[0] + "/"
+    return text
 
 
 def load_graph(ttl_path: Path) -> Graph:
@@ -47,6 +75,47 @@ def compute_metrics(graph: Graph) -> dict[str, int]:
         "resource_nodes": len(resource_terms),
         "literal_nodes": len(literal_terms),
     }
+
+
+def top_predicates(graph: Graph, limit: int = 10) -> list[tuple[str, int]]:
+    counts = Counter(str(predicate) for _, predicate, _ in graph)
+    return [(shorten_term(URIRef(predicate)), count) for predicate, count in counts.most_common(limit)]
+
+
+def top_namespaces(graph: Graph, limit: int = 8) -> list[tuple[str, int]]:
+    counts: Counter[str] = Counter()
+    for s, p, o in graph:
+        for term in (s, p, o):
+            namespace = term_namespace(term)
+            if namespace is not None:
+                counts[namespace] += 1
+    return counts.most_common(limit)
+
+
+def top_hi_classes(graph: Graph, limit: int = 12) -> list[tuple[str, int]]:
+    query = f"""
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+    SELECT ?class (COUNT(DISTINCT ?instance) AS ?count)
+    WHERE {{
+      ?instance rdf:type ?class .
+      FILTER(STRSTARTS(STR(?class), "{HI_NAMESPACE}"))
+    }}
+    GROUP BY ?class
+    ORDER BY DESC(?count) ?class
+    LIMIT {limit}
+    """
+    return [(shorten_term(row[0]), int(row[1])) for row in graph.query(query)]
+
+
+def print_profile_table(title: str, rows: list[tuple[str, int]], formatter=str) -> None:
+    print(f"\n{title}")
+    if not rows:
+        print("- no data")
+        return
+
+    for label, value in rows:
+        print(f"- {formatter(label)}: {value}")
 
 
 def print_metrics(metrics: dict[str, int]) -> None:
@@ -172,10 +241,15 @@ def main() -> None:
 
     metrics = compute_metrics(graph)
     print_metrics(metrics)
+    print_profile_table("Top namespaces", top_namespaces(graph))
+    print_profile_table("Top predicates", top_predicates(graph))
+    print_profile_table("Top HI classes by instance count", top_hi_classes(graph))
 
     if args.query_dir.exists():
         for query_path in sorted(args.query_dir.glob("*.rq")):
             run_query(graph, query_path, args.query_limit)
+    else:
+        print(f"\nQuery directory not found: {args.query_dir}")
 
     exported = export_resource_edges(graph, args.export_edges)
     print(f"\nExported {exported} resource edges to {args.export_edges}")

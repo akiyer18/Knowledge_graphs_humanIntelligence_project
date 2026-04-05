@@ -66,3 +66,8 @@ You can describe the query section like this:
 - `07_evaluation_completeness_complex.rq` uses 4+ triple patterns with `OPTIONAL`, `COUNT`, `GROUP BY`, `IF`, and `ORDER BY`.
 - `step4_visualize.py` produces figures that can be placed directly in the report.
 - The `TransE` run counts as a subsymbolic KG consumption method once it completes and reports ranking metrics such as `MRR` and `Hits@10`.
+
+## Notes For The Expanded Ontology
+
+- `step4_scripts/step4_kg_analysis.py` now defaults to `step4_queries/` and `step4_outputs/` so the Step 4 insights run against the current project layout.
+- The script also prints ontology-aware summaries for the enlarged graph, including the most common namespaces, predicates, and HI classes by instance count.
